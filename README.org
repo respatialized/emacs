@@ -1,0 +1,7 @@
+* Introduction 
+
+This is a git repo to manage the configuration files of emacs, so as to facilitate reversion to previously working configs and avoid conflicts. 
+
+* How to use this repo
+
+After pulling the latest version of the repo, copy the directory to the user root directory.

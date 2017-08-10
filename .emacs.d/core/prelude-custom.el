@@ -105,7 +105,4 @@ Only modes that don't derive from `prog-mode' should be listed here."
 
 (provide 'prelude-custom)
 
-;; Overriding default functionality
-(setq prelude-whitespace nil)
-
 ;;; prelude-custom.el ends here

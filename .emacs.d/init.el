@@ -45,7 +45,7 @@
     ("15348febfa2266c4def59a08ef2846f6032c0797f001d7b9148f30ace0d08bcf" "1db337246ebc9c083be0d728f8d20913a0f46edc0a00277746ba411c149d7fe5" default)))
  '(package-selected-packages
    (quote
-    (conda pyenv-mode-auto anaconda-mode pyenv-mode s dash-functional dash flatui-theme zenburn-theme xah-fly-keys ample-zen-theme))))
+    (cider conda pyenv-mode-auto anaconda-mode pyenv-mode s dash-functional dash flatui-theme zenburn-theme xah-fly-keys ample-zen-theme))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -74,3 +74,8 @@
 (conda-env-initialize-eshell)
 ;; if you want auto-activation (see below for details), include:
 (conda-env-autoactivate-mode t)
+
+; ob-clojure
+(setq org-babel-clojure-backend 'cider)
+(require 'ob-clojure)
+(require 'cider)

@@ -4,4 +4,6 @@ This is a git repo to manage the configuration files of emacs, so as to facilita
 
 * How to use this repo
 
-After pulling the latest version of the repo, copy the directory to the user root directory.
+After pulling the latest version of the repo, copy the files initfile.org and init.el to your .emacs configuration.
+
+New packages that you want to keep should go into the initfile.org list of package, instead of being installed via M-x package-install!

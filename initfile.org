@@ -1,0 +1,116 @@
+* Introduction
+
+This file contains a first attempt at organizing the loading code for emacs in order to make maintaining repos of the emacs config easier.
+* Pre-config
+
+#+begin_src emacs-lisp :tangle yes
+
+	  (setq package-list '(el-get magit dash dash-functional
+			       which-key org-journal xah-fly-keys
+			       ob-ipython conda clojure-mode cl
+			       cider 4clojure sourcerer-theme zenburn-theme
+			       golden-ratio org-brain sublime-themes))
+
+
+(require 'package) ;; You might already have this line
+(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                    (not (gnutls-available-p))))
+       (url (concat (if no-ssl "http" "https") "://melpa.org/packages/")))
+  (add-to-list 'package-archives (cons "melpa" url) t))
+(when (< emacs-major-version 24)
+  ;; For important compatibility libraries like cl-lib
+  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+(package-initialize) ;; You might already have this line
+
+
+	  ; fetch the list of packages available 
+	  (unless package-archive-contents
+	    (package-refresh-contents))
+
+	  ; install the missing packages
+	  (dolist (package package-list)
+	    (unless (package-installed-p package)
+	      (package-install package)))
+
+#+end_src
+
+
+* Config
+Loading keybindings, organizational, and language specific code
+** Keybindings
+
+#+begin_src emacs-lisp :tangle yes
+;; Xah-Fly-Keys setup
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+(require 'xah-fly-keys)
+(xah-fly-keys-set-layout "qwerty") ; required if you use qwerty
+(xah-fly-keys 1)
+
+#+end_src
+
+** Org-mode/org-brain
+
+#+begin_src emacs-lisp :tangle yes
+
+; org-journal
+(require 'org-journal)
+(setq org-journal-dir "~/journal")
+
+#+end_src
+** Python
+#+begin_src emacs-lisp :tangle yes
+;; ob-ipython
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((ipython . t)
+   (clojure . t)
+   (python . t)))
+
+(require 'ob-ipython)
+(setq ob-ipython-command "jupyter console")
+
+
+
+
+;(require 'conda)
+
+;; changing default conda path
+
+
+;; if you want interactive shell support, include:
+;(conda-env-initialize-interactive-shells)
+;; if you want eshell support, include:
+;(conda-env-initialize-eshell)
+;; if you want auto-activation (see below for details), include:
+;(conda-env-autoactivate-mode t)
+
+#+end_src
+** Clojure
+# #+begin_src emacs-lisp :tangle yes
+# ; ob-clojure
+# (setq org-babel-clojure-backend 'cider)
+# (require 'ob-clojure)
+# (require 'cider)
+
+# #+end_src
+
+* Appearance 
+Adjusting the visual styling
+
+#+begin_src emacs-lisp :tangle yes
+
+;; Enabling the theme
+(load-theme 'sourcerer)
+
+;; Setting font and line-height defaults
+(setq line-spacing 0.25)
+(set-face-attribute 'default t :font "Fira Mono-13")
+
+(require 'golden-ratio)
+(golden-ratio-mode 1)
+(setq golden-ratio-auto-scale t)
+
+;; Disable the menu bar
+(menu-bar-mode -1)
+
+#+end_src

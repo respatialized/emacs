@@ -5,8 +5,8 @@ This file contains a first attempt at organizing the loading code for emacs in o
 
 #+begin_src emacs-lisp :tangle yes
 
-	  (setq package-list '(el-get magit dash dash-functional
-			       which-key org-journal xah-fly-keys
+	  (setq package-list '(el-get magit dash dash-functional all-the-icons
+			       which-key org-journal xah-fly-keys spaceline
 			       ob-ipython conda clojure-mode cl leuven-theme
 			       cider 4clojure sourcerer-theme zenburn-theme
 			       golden-ratio org-brain sublime-themes
@@ -152,9 +152,17 @@ Adjusting the visual styling.
 
 (setq line-spacing 0.25)
 
-; Org-mode indentation
+; Org-mode visual line mode
 (with-eval-after-load 'org       
   (add-hook 'org-mode-hook #'visual-line-mode))
+
+; Decoration
+(require 'all-the-icons)
+
+; Activate spaceline
+(require 'spaceline-config)
+(spaceline-emacs-theme)
+
 
 
 #+end_src

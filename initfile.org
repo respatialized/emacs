@@ -7,9 +7,10 @@ This file contains a first attempt at organizing the loading code for emacs in o
 
 	  (setq package-list '(el-get magit dash dash-functional
 			       which-key org-journal xah-fly-keys
-			       ob-ipython conda clojure-mode cl
+			       ob-ipython conda clojure-mode cl leuven-theme
 			       cider 4clojure sourcerer-theme zenburn-theme
-			       golden-ratio org-brain sublime-themes))
+			       golden-ratio org-brain sublime-themes
+			       material-theme))
 
 
 (require 'package) ;; You might already have this line
@@ -34,7 +35,6 @@ This file contains a first attempt at organizing the loading code for emacs in o
 
 #+end_src
 
-
 * Config
 Loading keybindings, organizational, and language specific code
 ** Keybindings
@@ -52,11 +52,26 @@ Loading keybindings, organizational, and language specific code
 
 #+begin_src emacs-lisp :tangle yes
 
+; org-agenda
+
+(require 'org)
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)
+(setq org-agenda-files (list "~/org/work.org"
+                             "~/org/programming-math.org" 
+                             "~/org/built-environments.org"
+			     "~/org/personal.org"))
+
+
+
+
 ; org-journal
 (require 'org-journal)
 (setq org-journal-dir "~/journal")
 
 #+end_src
+
 ** Python
 #+begin_src emacs-lisp :tangle yes
 ;; ob-ipython
@@ -85,6 +100,7 @@ Loading keybindings, organizational, and language specific code
 ;(conda-env-autoactivate-mode t)
 
 #+end_src
+
 ** Clojure
 # #+begin_src emacs-lisp :tangle yes
 # ; ob-clojure
@@ -94,23 +110,51 @@ Loading keybindings, organizational, and language specific code
 
 # #+end_src
 
-* Appearance 
-Adjusting the visual styling
+* Appearance
+Adjusting the visual styling.
 
 #+begin_src emacs-lisp :tangle yes
 
 ;; Enabling the theme
-(load-theme 'sourcerer)
+(load-theme 'material t)
 
 ;; Setting font and line-height defaults
-(setq line-spacing 0.25)
-(set-face-attribute 'default t :font "Fira Mono-13")
 
 (require 'golden-ratio)
 (golden-ratio-mode 1)
 (setq golden-ratio-auto-scale t)
 
 ;; Disable the menu bar
-(menu-bar-mode -1)
+(tool-bar-mode -1)
+
+;; changing fonts for org-mode
+
+
+(set-face-font 'fixed-pitch "Fira Mono-13")
+(set-face-font 'variable-pitch "Archivo-12")
+
+
+  (defun set-buffer-variable-pitch ()
+    (interactive)
+    (variable-pitch-mode t)
+    (setq line-spacing 3)
+     (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+     (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
+     (set-face-attribute 'org-block-begin-line nil :inherit 'fixed-pitch)
+     (set-face-attribute 'org-block-end-line nil :inherit 'fixed-pitch)
+     (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+    )
+
+  (add-hook 'org-mode-hook 'set-buffer-variable-pitch)
+  (add-hook 'eww-mode-hook 'set-buffer-variable-pitch)
+  (add-hook 'markdown-mode-hook 'set-buffer-variable-pitch)
+  (add-hook 'Info-mode-hook 'set-buffer-variable-pitch)
+
+(setq line-spacing 0.25)
+
+; Org-mode indentation
+(with-eval-after-load 'org       
+  (add-hook 'org-mode-hook #'visual-line-mode))
+
 
 #+end_src

@@ -10,7 +10,7 @@ This file contains a first attempt at organizing the loading code for emacs in o
 			       ob-ipython conda clojure-mode cl leuven-theme
 			       cider 4clojure sourcerer-theme zenburn-theme
 			       golden-ratio org-brain sublime-themes
-			       material-theme))
+			       material-theme dim))
 
 
 (require 'package) ;; You might already have this line
@@ -70,6 +70,10 @@ Loading keybindings, organizational, and language specific code
 (require 'org-journal)
 (setq org-journal-dir "~/journal")
 
+; org-brain
+(setq org-id-track-globally t)
+(setq org-id-locations-file "~/.emacs.d/.org-id-locations")
+
 #+end_src
 
 ** Python
@@ -87,17 +91,18 @@ Loading keybindings, organizational, and language specific code
 
 
 
-;(require 'conda)
+(require 'conda)
 
 ;; changing default conda path
-
+(custom-set-variables
+  '(conda-anaconda-home "~/miniconda3/bin/conda"))
 
 ;; if you want interactive shell support, include:
-;(conda-env-initialize-interactive-shells)
+(conda-env-initialize-interactive-shells)
 ;; if you want eshell support, include:
-;(conda-env-initialize-eshell)
+(conda-env-initialize-eshell)
 ;; if you want auto-activation (see below for details), include:
-;(conda-env-autoactivate-mode t)
+(conda-env-autoactivate-mode t)
 
 #+end_src
 
@@ -131,13 +136,13 @@ Adjusting the visual styling.
 
 
 (set-face-font 'fixed-pitch "Fira Mono-13")
-(set-face-font 'variable-pitch "Archivo-12")
+(set-face-font 'variable-pitch "Archivo-14:spacing=110:weight=light")
 
 
   (defun set-buffer-variable-pitch ()
     (interactive)
     (variable-pitch-mode t)
-    (setq line-spacing 3)
+    (setq line-spacing 0.45)
      (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
      (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
      (set-face-attribute 'org-block-begin-line nil :inherit 'fixed-pitch)
@@ -150,7 +155,7 @@ Adjusting the visual styling.
   (add-hook 'markdown-mode-hook 'set-buffer-variable-pitch)
   (add-hook 'Info-mode-hook 'set-buffer-variable-pitch)
 
-(setq line-spacing 0.25)
+
 
 ; Org-mode visual line mode
 (with-eval-after-load 'org       
@@ -158,10 +163,24 @@ Adjusting the visual styling.
 
 ; Decoration
 (require 'all-the-icons)
+(dim-major-names
+ '((emacs-lisp-mode           "EL")
+   (inferior-emacs-lisp-mode  "EL>")
+   (calendar-mode             "📆")))
+(dim-minor-names
+ '((visual-line-mode   " ↩")
+   (auto-fill-function " ↵")
+   (eldoc-mode         ""    eldoc)
+   (golden-ratio-mode "φ")
+   (xah-fly-keys "Σ")
+   (buffer-face-mode "β")
+   (whitespace-mode    " _"  whitespace)
+   (paredit-mode       " ()" paredit)))
 
 ; Activate spaceline
 (require 'spaceline-config)
 (spaceline-emacs-theme)
+
 
 
 

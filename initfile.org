@@ -5,33 +5,34 @@ This file contains a first attempt at organizing the loading code for emacs in o
 
 #+begin_src emacs-lisp :tangle yes
 
-	  (setq package-list '(el-get magit dash dash-functional all-the-icons
-			       which-key org-journal xah-fly-keys spaceline
-			       ob-ipython conda clojure-mode cl leuven-theme
-			       cider 4clojure sourcerer-theme zenburn-theme
-			       golden-ratio org-brain sublime-themes
-			       material-theme dim))
+(setq package-list '(el-get use-package magit dash dash-functional
+		     all-the-icons which-key org-journal xah-fly-keys 
+                     spaceline ob-ipython conda
+		     clojure-mode cl leuven-theme
+				   cider 4clojure sourcerer-theme zenburn-theme
+				   golden-ratio org-brain sublime-themes
+				   material-theme dim))
 
 
-(require 'package) ;; You might already have this line
-(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                    (not (gnutls-available-p))))
-       (url (concat (if no-ssl "http" "https") "://melpa.org/packages/")))
-  (add-to-list 'package-archives (cons "melpa" url) t))
-(when (< emacs-major-version 24)
-  ;; For important compatibility libraries like cl-lib
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
-(package-initialize) ;; You might already have this line
+    (require 'package) ;; You might already have this line
+    (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+			(not (gnutls-available-p))))
+	   (url (concat (if no-ssl "http" "https") "://melpa.org/packages/")))
+      (add-to-list 'package-archives (cons "melpa" url) t))
+    (when (< emacs-major-version 24)
+      ;; For important compatibility libraries like cl-lib
+      (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+    (package-initialize) ;; You might already have this line
 
 
-	  ; fetch the list of packages available 
-	  (unless package-archive-contents
-	    (package-refresh-contents))
+	      ; fetch the list of packages available 
+	      (unless package-archive-contents
+		(package-refresh-contents))
 
-	  ; install the missing packages
-	  (dolist (package package-list)
-	    (unless (package-installed-p package)
-	      (package-install package)))
+	      ; install the missing packages
+	      (dolist (package package-list)
+		(unless (package-installed-p package)
+		  (package-install package)))
 
 #+end_src
 
@@ -45,6 +46,31 @@ Loading keybindings, organizational, and language specific code
 (require 'xah-fly-keys)
 (xah-fly-keys-set-layout "qwerty") ; required if you use qwerty
 (xah-fly-keys 1)
+
+;; Xah Fly Keys customization
+
+(define-key xah-fly-leader-key-map
+ (kbd "e") 'org-babel-execute-src-block)
+
+(define-key xah-fly-leader-key-map
+ (kbd "z") 'comment-region)
+
+(define-key xah-fly-leader-key-map
+ (kbd "w") 'org-agenda)
+
+; org-mode specific leader key sequences
+(add-hook 'org-mode-hook
+(lambda ()
+(setq afm-org-xah-keys (make-sparse-keymap))
+(define-key afm-org-xah-keys (kbd "t") 'org-todo)
+(define-key afm-org-xah-keys (kbd "a") 'org-archive-subtree)
+(define-key afm-org-xah-keys (kbd "s") 'org-schedule)
+(define-key afm-org-xah-keys (kbd "d") 'org-deadline)
+(define-key afm-org-xah-keys (kbd ".") 'org-timestamp)
+
+(define-key xah-fly-leader-key-map (kbd "o") afm-org-xah-keys)))
+
+
 
 #+end_src
 
@@ -85,17 +111,16 @@ Loading keybindings, organizational, and language specific code
    (clojure . t)
    (python . t)))
 
+(setq org-src-tab-acts-natively t)
+
 (require 'ob-ipython)
 (setq ob-ipython-command "jupyter console")
-
-
-
 
 (require 'conda)
 
 ;; changing default conda path
 (custom-set-variables
-  '(conda-anaconda-home "~/miniconda3/bin/conda"))
+  '(conda-anaconda-home "/home/afm/.conda"))
 
 ;; if you want interactive shell support, include:
 (conda-env-initialize-interactive-shells)
@@ -161,12 +186,17 @@ Adjusting the visual styling.
 (with-eval-after-load 'org       
   (add-hook 'org-mode-hook #'visual-line-mode))
 
+; Activate spaceline
+(require 'spaceline-config)
+(spaceline-emacs-theme)
+
 ; Decoration
 (require 'all-the-icons)
 (dim-major-names
  '((emacs-lisp-mode           "EL")
    (inferior-emacs-lisp-mode  "EL>")
-   (calendar-mode             "📆")))
+   (calendar-mode             "📆")
+   (org "☑")))
 (dim-minor-names
  '((visual-line-mode   " ↩")
    (auto-fill-function " ↵")
@@ -176,11 +206,6 @@ Adjusting the visual styling.
    (buffer-face-mode "β")
    (whitespace-mode    " _"  whitespace)
    (paredit-mode       " ()" paredit)))
-
-; Activate spaceline
-(require 'spaceline-config)
-(spaceline-emacs-theme)
-
 
 
 

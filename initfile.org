@@ -8,7 +8,7 @@ This file contains a first attempt at organizing the loading code for emacs in o
 (setq package-list '(el-get magit dash dash-functional
 		     all-the-icons which-key org-journal xah-fly-keys 
                      spaceline ob-ipython conda bind-key use-package
-		     clojure-mode cl leuven-theme deft org-brain
+		     clojure-mode cl leuven-theme deft org-brain typit
 				   cider 4clojure sourcerer-theme zenburn-theme
 				   golden-ratio org-brain sublime-themes
 				   material-theme dim))
@@ -58,6 +58,10 @@ Loading keybindings, organizational, and language specific code
 (define-key xah-fly-leader-key-map
  (kbd "w") 'org-agenda)
 
+(define-key xah-fly-leader-key-map
+ (kbd "c") 'org-capture)
+
+
 ; org-mode specific leader key sequences
 (add-hook 'org-mode-hook
 (lambda ()
@@ -90,7 +94,8 @@ Loading keybindings, organizational, and language specific code
   (sequence "TODO(t)" "WAITING(w)" "EVENT(e)" "PROJECT(p)" "|" "COMPLETE(d)"
    "CANCELLED(c)")
   (sequence "NOT GROOMED(b)" "OPEN(s)" "IN PROGRESS(a)" "EPIC(r)" "|"
-  "REVIEW(y)" "DONE(f)")))
+  "REVIEW(y)" "DONE(f)" "WON'T DO(x)")))
+
 
 
 
@@ -98,6 +103,9 @@ Loading keybindings, organizational, and language specific code
 (setq org-agenda-files '("~/org/inbox.org"
                          "~/org/gtd.org"
                          "~/org/upcoming.org"))
+
+; org-capture
+(setq org-default-notes-file (concat org-directory "/inbox.org"))
 
 #+end_src
 
@@ -240,12 +248,22 @@ Adjusting the visual styling.
 
 ; org mode keywords
 (setq org-todo-keyword-faces
-  '(("TODO" . org-warning)
-   ("WAITING" . (:background "orange" :foreground "dim grey"))
-   ("EVENT" . (:background "grey" :foreground "dim grey"))
-   ("PROJECT" . (:background "deep sky blue" :foreground "dim grey"))
-   ("DONE" . (:background "green" :foreground "dim grey"))
-   ("CANCELLED" .  (:background "yellow" :foreground "dim grey"))))
+  '(("TODO" . (:background "firebrick" :foreground "gray18"))
+   ("WAITING" . (:background "tomato" :foreground "gray18"))
+   ("EVENT" . (:background "burlywood" :foreground "gray18"))
+   ("PROJECT" . (:background "deep sky blue" :foreground "gray18"))
+   ("COMPLETE" . (:background "SpringGreen3" :foreground "gray18"))
+   ("CANCELLED" .  (:background "tan" :foreground "gray18"))
+; JIRA colors
+   ("NOT GROOMED" .  (:background "slate gray" :foreground "white smoke"))
+   ("EPIC" .  (:background "coral3" :foreground "white smoke"))
+   ("OPEN" .  (:background "cadet blue" :foreground "white smoke"))
+   ("IN PROGRESS" .  (:background "steel blue" :foreground "white smoke"))
+   ("REVIEW" .  (:background "sea green" :foreground "white smoke"))
+   ("DONE" .  (:background "forest green" :foreground "white smoke"))
+   ("WON'T DO" .  (:background "rosy brown" :foreground "white smoke"))
+
+))
 
 
 

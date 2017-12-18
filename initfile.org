@@ -5,33 +5,34 @@ This file contains a first attempt at organizing the loading code for emacs in o
 
 #+begin_src emacs-lisp :tangle yes
 
-	  (setq package-list '(el-get magit dash dash-functional
-			       which-key org-journal xah-fly-keys
-			       ob-ipython conda clojure-mode cl leuven-theme
-			       cider 4clojure sourcerer-theme zenburn-theme
-			       golden-ratio org-brain sublime-themes
-			       material-theme))
+(setq package-list '(el-get magit dash dash-functional
+		     all-the-icons which-key org-journal xah-fly-keys 
+                     spaceline ob-ipython conda bind-key use-package
+		     clojure-mode cl leuven-theme deft org-brain typit
+				   cider 4clojure sourcerer-theme zenburn-theme
+				   golden-ratio org-brain sublime-themes
+				   material-theme dim))
 
 
-(require 'package) ;; You might already have this line
-(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                    (not (gnutls-available-p))))
-       (url (concat (if no-ssl "http" "https") "://melpa.org/packages/")))
-  (add-to-list 'package-archives (cons "melpa" url) t))
-(when (< emacs-major-version 24)
-  ;; For important compatibility libraries like cl-lib
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
-(package-initialize) ;; You might already have this line
+    (require 'package) ;; You might already have this line
+    (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+			(not (gnutls-available-p))))
+	   (url (concat (if no-ssl "http" "https") "://melpa.org/packages/")))
+      (add-to-list 'package-archives (cons "melpa" url) t))
+    (when (< emacs-major-version 24)
+      ;; For important compatibility libraries like cl-lib
+      (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+    (package-initialize) ;; You might already have this line
 
 
-	  ; fetch the list of packages available 
-	  (unless package-archive-contents
-	    (package-refresh-contents))
+	      ; fetch the list of packages available 
+	      (unless package-archive-contents
+		(package-refresh-contents))
 
-	  ; install the missing packages
-	  (dolist (package package-list)
-	    (unless (package-installed-p package)
-	      (package-install package)))
+	      ; install the missing packages
+	      (dolist (package package-list)
+		(unless (package-installed-p package)
+		  (package-install package)))
 
 #+end_src
 
@@ -46,29 +47,97 @@ Loading keybindings, organizational, and language specific code
 (xah-fly-keys-set-layout "qwerty") ; required if you use qwerty
 (xah-fly-keys 1)
 
+;; Xah Fly Keys customization
+
+(define-key xah-fly-leader-key-map
+ (kbd "e") 'org-babel-execute-src-block)
+
+(define-key xah-fly-leader-key-map
+ (kbd "z") 'comment-region)
+
+(define-key xah-fly-leader-key-map
+ (kbd "w") 'org-agenda)
+
+(define-key xah-fly-leader-key-map
+ (kbd "c") 'org-capture)
+
+
+; org-mode specific leader key sequences
+(add-hook 'org-mode-hook
+(lambda ()
+(setq afm-org-xah-keys (make-sparse-keymap))
+(define-key afm-org-xah-keys (kbd "t") 'org-todo)
+(define-key afm-org-xah-keys (kbd "a") 'org-archive-subtree)
+(define-key afm-org-xah-keys (kbd "s") 'org-schedule)
+(define-key afm-org-xah-keys (kbd "d") 'org-deadline)
+(define-key afm-org-xah-keys (kbd ".") 'org-timestamp)
+(define-key afm-org-xah-keys (kbd "l") 'org-set-tags-command)
+
+(define-key xah-fly-leader-key-map (kbd "o") afm-org-xah-keys)))
+
+
+
 #+end_src
 
-** Org-mode/org-brain
+** Org-mode GTD
 
 #+begin_src emacs-lisp :tangle yes
 
-; org-agenda
-
 (require 'org)
-(define-key global-map "\C-cl" 'org-store-link)
-(define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
-(setq org-agenda-files (list "~/org/work.org"
-                             "~/org/programming-math.org" 
-                             "~/org/built-environments.org"
-			     "~/org/personal.org"))
+
+(setq org-refile-targets '(("~/org/gtd.org" :maxlevel . 3)
+                           ("~/org/someday.org" :level . 1)
+                           ("~/org/upcoming.org" :maxlevel . 2)))
+
+(setq org-todo-keywords '(
+  (sequence "TODO(t)" "WAITING(w)" "EVENT(e)" "PROJECT(p)" "|" "COMPLETE(d)"
+   "CANCELLED(c)")
+  (sequence "NOT GROOMED(b)" "OPEN(s)" "IN PROGRESS(a)" "EPIC(r)" "|"
+  "REVIEW(y)" "DONE(f)" "WON'T DO(x)")))
 
 
 
+
+; org-agenda
+(setq org-agenda-files '("~/org/inbox.org"
+                         "~/org/gtd.org"
+                         "~/org/upcoming.org"))
+
+; org-capture
+(setq org-default-notes-file (concat org-directory "/inbox.org"))
+
+#+end_src
+
+** Org-brain + Deft + Journal
+
+#+begin_src emacs-lisp :tangle yes
+
+; org-brain
+(require 'org-brain)
+(setq org-brain-path "~/org")
+(setq org-id-track-globally t)
+(setq org-id-locations-file "~/.emacs.d/.org-id-locations")
+
+; deft
+
+(require 'deft)
+(setq deft-extensions '("org"))
+(setq deft-directory "~/org")
+(setq deft-recursive t)
+
+(defun org-brain-deft ()
+  "Use `deft' for files in `org-brain-path'."
+  (interactive)
+  (let ((deft-directory org-brain-path)
+        (deft-recursive t)
+        (deft-extensions '("org")))
+    (deft)))
 
 ; org-journal
+(setq org-journal-dir "~/org/journal")
 (require 'org-journal)
-(setq org-journal-dir "~/journal")
+
 
 #+end_src
 
@@ -81,23 +150,23 @@ Loading keybindings, organizational, and language specific code
    (clojure . t)
    (python . t)))
 
+(setq org-src-tab-acts-natively t)
+
 (require 'ob-ipython)
 (setq ob-ipython-command "jupyter console")
 
-
-
-
-;(require 'conda)
+(require 'conda)
 
 ;; changing default conda path
-
+(custom-set-variables
+  '(conda-anaconda-home "/home/afm/.conda"))
 
 ;; if you want interactive shell support, include:
-;(conda-env-initialize-interactive-shells)
+(conda-env-initialize-interactive-shells)
 ;; if you want eshell support, include:
-;(conda-env-initialize-eshell)
+(conda-env-initialize-eshell)
 ;; if you want auto-activation (see below for details), include:
-;(conda-env-autoactivate-mode t)
+(conda-env-autoactivate-mode t)
 
 #+end_src
 
@@ -131,13 +200,13 @@ Adjusting the visual styling.
 
 
 (set-face-font 'fixed-pitch "Fira Mono-13")
-(set-face-font 'variable-pitch "Archivo-12")
+(set-face-font 'variable-pitch "Archivo-14:spacing=110:weight=light")
 
 
   (defun set-buffer-variable-pitch ()
     (interactive)
     (variable-pitch-mode t)
-    (setq line-spacing 3)
+    (setq line-spacing 0.45)
      (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
      (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
      (set-face-attribute 'org-block-begin-line nil :inherit 'fixed-pitch)
@@ -150,11 +219,52 @@ Adjusting the visual styling.
   (add-hook 'markdown-mode-hook 'set-buffer-variable-pitch)
   (add-hook 'Info-mode-hook 'set-buffer-variable-pitch)
 
-(setq line-spacing 0.25)
 
-; Org-mode indentation
+
+; Org-mode visual line mode
 (with-eval-after-load 'org       
   (add-hook 'org-mode-hook #'visual-line-mode))
+
+; Activate spaceline
+(require 'spaceline-config)
+(spaceline-emacs-theme)
+
+; Decoration
+(require 'all-the-icons)
+(dim-major-names
+ '((emacs-lisp-mode           "EL")
+   (inferior-emacs-lisp-mode  "EL>")
+   (calendar-mode             "📆")
+   (org "☑")))
+(dim-minor-names
+ '((visual-line-mode   " ↩")
+   (auto-fill-function " ↵")
+   (eldoc-mode         ""    eldoc)
+   (golden-ratio-mode "φ")
+   (xah-fly-keys "Σ")
+   (buffer-face-mode "β")
+   (whitespace-mode    " _"  whitespace)
+   (paredit-mode       " ()" paredit)))
+
+; org mode keywords
+(setq org-todo-keyword-faces
+  '(("TODO" . (:background "firebrick" :foreground "gray18"))
+   ("WAITING" . (:background "tomato" :foreground "gray18"))
+   ("EVENT" . (:background "burlywood" :foreground "gray18"))
+   ("PROJECT" . (:background "deep sky blue" :foreground "gray18"))
+   ("COMPLETE" . (:background "SpringGreen3" :foreground "gray18"))
+   ("CANCELLED" .  (:background "tan" :foreground "gray18"))
+; JIRA colors
+   ("NOT GROOMED" .  (:background "slate gray" :foreground "white smoke"))
+   ("EPIC" .  (:background "coral3" :foreground "white smoke"))
+   ("OPEN" .  (:background "cadet blue" :foreground "white smoke"))
+   ("IN PROGRESS" .  (:background "steel blue" :foreground "white smoke"))
+   ("REVIEW" .  (:background "sea green" :foreground "white smoke"))
+   ("DONE" .  (:background "forest green" :foreground "white smoke"))
+   ("WON'T DO" .  (:background "rosy brown" :foreground "white smoke"))
+
+))
+
 
 
 #+end_src

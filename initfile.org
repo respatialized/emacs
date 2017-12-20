@@ -100,8 +100,7 @@ Loading keybindings, organizational, and language specific code
 
 
 ; org-agenda
-(setq org-agenda-files '("~/org/inbox.org"
-                         "~/org/gtd.org"
+(setq org-agenda-files '("~/org/gtd.org"
                          "~/org/upcoming.org"))
 
 ; org-capture
@@ -196,12 +195,16 @@ Adjusting the visual styling.
 ;; Disable the menu bar
 (tool-bar-mode -1)
 
+;; global font change
+(add-to-list 'default-frame-alist
+ '(font . "Overpass Mono-13"))
+
+
 ;; changing fonts for org-mode
 
-
-(set-face-font 'fixed-pitch "Fira Mono-13")
-(set-face-font 'variable-pitch "Archivo-14:spacing=110:weight=light")
-
+(set-face-font 'fixed-pitch "Overpass Mono-13")
+(set-face-font 'variable-pitch "Overpass-14:spacing=110")
+(set-face-font 'org-column "Overpass Mono-13")
 
   (defun set-buffer-variable-pitch ()
     (interactive)
@@ -231,11 +234,6 @@ Adjusting the visual styling.
 
 ; Decoration
 (require 'all-the-icons)
-(dim-major-names
- '((emacs-lisp-mode           "EL")
-   (inferior-emacs-lisp-mode  "EL>")
-   (calendar-mode             "📆")
-   (org "☑")))
 (dim-minor-names
  '((visual-line-mode   " ↩")
    (auto-fill-function " ↵")
@@ -244,7 +242,17 @@ Adjusting the visual styling.
    (xah-fly-keys "Σ")
    (buffer-face-mode "β")
    (whitespace-mode    " _"  whitespace)
-   (paredit-mode       " ()" paredit)))
+   (paredit-mode       " ()" paredit)
+   (org-agenda-mode            "☑")
+   ))
+(dim-major-names
+ '((emacs-lisp-mode           "EL")
+   (inferior-emacs-lisp-mode  "EL>")
+   (calendar-mode             "📆")
+   (org-mode "✎")
+))
+
+
 
 ; org mode keywords
 (setq org-todo-keyword-faces

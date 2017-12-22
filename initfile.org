@@ -18,7 +18,9 @@ This file contains a first attempt at organizing the loading code for emacs in o
     (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
 			(not (gnutls-available-p))))
 	   (url (concat (if no-ssl "http" "https") "://melpa.org/packages/")))
-      (add-to-list 'package-archives (cons "melpa" url) t))
+      (add-to-list 'package-archives 
+                   '("melpa" . "http://melpa.org/packages/")
+                   '("melpa-stable" . "https://stable.melpa.org/packages/")))
     (when (< emacs-major-version 24)
       ;; For important compatibility libraries like cl-lib
       (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
@@ -35,6 +37,8 @@ This file contains a first attempt at organizing the loading code for emacs in o
 		  (package-install package)))
 
 #+end_src
+
+#+RESULTS:
 
 * Config
 Loading keybindings, organizational, and language specific code
@@ -140,16 +144,24 @@ Loading keybindings, organizational, and language specific code
 
 #+end_src
 
-** Python
+** Org-babel
+
 #+begin_src emacs-lisp :tangle yes
-;; ob-ipython
+
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((ipython . t)
    (clojure . t)
-   (python . t)))
+   (python . t)
+   (scala .t )))
 
 (setq org-src-tab-acts-natively t)
+
+#+end_src
+
+** Python
+#+begin_src emacs-lisp :tangle yes
+;; ob-ipython
 
 (require 'ob-ipython)
 (setq ob-ipython-command "jupyter console")
@@ -170,13 +182,33 @@ Loading keybindings, organizational, and language specific code
 #+end_src
 
 ** Clojure
-# #+begin_src emacs-lisp :tangle yes
-# ; ob-clojure
-# (setq org-babel-clojure-backend 'cider)
-# (require 'ob-clojure)
-# (require 'cider)
+#+begin_src emacs-lisp :tangle yes
+; ob-clojure
+(setq org-babel-clojure-backend 'cider)
+(require 'ob-clojure)
+(require 'cider)
 
-# #+end_src
+#+end_src
+
+** Scala
+
+#+begin_src emacs-lisp :tangle yes
+(use-package ensime
+  :ensure t)
+(setq 
+ ensime-sbt-command "/usr/bin/sbt"
+ sbt:program-name "/usr/bin/sbt")
+
+(use-package sbt-mode
+  :pin melpa)
+(use-package scala-mode
+  :pin melpa)
+
+
+#+end_src
+
+#+RESULTS:
+: /usr/bin/sbt
 
 * Appearance
 Adjusting the visual styling.
@@ -243,13 +275,19 @@ Adjusting the visual styling.
    (buffer-face-mode "β")
    (whitespace-mode    " _"  whitespace)
    (paredit-mode       " ()" paredit)
-   (org-agenda-mode            "☑")
+   (ensime-mode "ϵ")
+   
    ))
+
+
 (dim-major-names
  '((emacs-lisp-mode           "EL")
+   (scala-mode "﻿Ｓ")
+   (ensime-inf-mode "ϵ>")
    (inferior-emacs-lisp-mode  "EL>")
    (calendar-mode             "📆")
    (org-mode "✎")
+   (org-agenda-mode            "☑")
 ))
 
 

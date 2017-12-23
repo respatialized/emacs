@@ -18,7 +18,9 @@ This file contains a first attempt at organizing the loading code for emacs in o
     (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
 			(not (gnutls-available-p))))
 	   (url (concat (if no-ssl "http" "https") "://melpa.org/packages/")))
-      (add-to-list 'package-archives (cons "melpa" url) t))
+      (add-to-list 'package-archives 
+                   '("melpa" . "http://melpa.org/packages/")
+                   '("melpa-stable" . "https://stable.melpa.org/packages/")))
     (when (< emacs-major-version 24)
       ;; For important compatibility libraries like cl-lib
       (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
@@ -35,6 +37,8 @@ This file contains a first attempt at organizing the loading code for emacs in o
 		  (package-install package)))
 
 #+end_src
+
+#+RESULTS:
 
 * Config
 Loading keybindings, organizational, and language specific code
@@ -100,8 +104,7 @@ Loading keybindings, organizational, and language specific code
 
 
 ; org-agenda
-(setq org-agenda-files '("~/org/inbox.org"
-                         "~/org/gtd.org"
+(setq org-agenda-files '("~/org/gtd.org"
                          "~/org/upcoming.org"))
 
 ; org-capture
@@ -141,16 +144,24 @@ Loading keybindings, organizational, and language specific code
 
 #+end_src
 
-** Python
+** Org-babel
+
 #+begin_src emacs-lisp :tangle yes
-;; ob-ipython
+
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((ipython . t)
    (clojure . t)
-   (python . t)))
+   (python . t)
+   (scala .t )))
 
 (setq org-src-tab-acts-natively t)
+
+#+end_src
+
+** Python
+#+begin_src emacs-lisp :tangle yes
+;; ob-ipython
 
 (require 'ob-ipython)
 (setq ob-ipython-command "jupyter console")
@@ -171,13 +182,33 @@ Loading keybindings, organizational, and language specific code
 #+end_src
 
 ** Clojure
-# #+begin_src emacs-lisp :tangle yes
-# ; ob-clojure
-# (setq org-babel-clojure-backend 'cider)
-# (require 'ob-clojure)
-# (require 'cider)
+#+begin_src emacs-lisp :tangle yes
+; ob-clojure
+(setq org-babel-clojure-backend 'cider)
+(require 'ob-clojure)
+(require 'cider)
 
-# #+end_src
+#+end_src
+
+** Scala
+
+#+begin_src emacs-lisp :tangle yes
+(use-package ensime
+  :ensure t)
+(setq 
+ ensime-sbt-command "/usr/bin/sbt"
+ sbt:program-name "/usr/bin/sbt")
+
+(use-package sbt-mode
+  :pin melpa)
+(use-package scala-mode
+  :pin melpa)
+
+
+#+end_src
+
+#+RESULTS:
+: /usr/bin/sbt
 
 * Appearance
 Adjusting the visual styling.
@@ -196,12 +227,16 @@ Adjusting the visual styling.
 ;; Disable the menu bar
 (tool-bar-mode -1)
 
+;; global font change
+(add-to-list 'default-frame-alist
+ '(font . "Overpass Mono-13"))
+
+
 ;; changing fonts for org-mode
 
-
-(set-face-font 'fixed-pitch "Fira Mono-13")
-(set-face-font 'variable-pitch "Archivo-14:spacing=110:weight=light")
-
+(set-face-font 'fixed-pitch "Overpass Mono-13")
+(set-face-font 'variable-pitch "Overpass-14:spacing=110")
+(set-face-font 'org-column "Overpass Mono-13")
 
   (defun set-buffer-variable-pitch ()
     (interactive)
@@ -231,11 +266,6 @@ Adjusting the visual styling.
 
 ; Decoration
 (require 'all-the-icons)
-(dim-major-names
- '((emacs-lisp-mode           "EL")
-   (inferior-emacs-lisp-mode  "EL>")
-   (calendar-mode             "📆")
-   (org "☑")))
 (dim-minor-names
  '((visual-line-mode   " ↩")
    (auto-fill-function " ↵")
@@ -244,7 +274,23 @@ Adjusting the visual styling.
    (xah-fly-keys "Σ")
    (buffer-face-mode "β")
    (whitespace-mode    " _"  whitespace)
-   (paredit-mode       " ()" paredit)))
+   (paredit-mode       " ()" paredit)
+   (ensime-mode "ϵ")
+   
+   ))
+
+
+(dim-major-names
+ '((emacs-lisp-mode           "EL")
+   (scala-mode "﻿Ｓ")
+   (ensime-inf-mode "ϵ>")
+   (inferior-emacs-lisp-mode  "EL>")
+   (calendar-mode             "📆")
+   (org-mode "✎")
+   (org-agenda-mode            "☑")
+))
+
+
 
 ; org mode keywords
 (setq org-todo-keyword-faces

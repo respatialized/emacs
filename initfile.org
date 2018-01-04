@@ -93,6 +93,9 @@ Loading keybindings, organizational, and language specific code
 (setq org-refile-targets '(("~/org/gtd.org" :maxlevel . 3)
                            ("~/org/someday.org" :level . 1)
                            ("~/org/upcoming.org" :maxlevel . 2)))
+(setq org-outline-path-complete-in-steps t)
+(setq org-refile-use-outline-path 'file)
+
 
 (setq org-todo-keywords '(
   (sequence "TODO(t)" "WAITING(w)" "EVENT(e)" "PROJECT(p)" "|" "COMPLETE(d)"
@@ -109,6 +112,11 @@ Loading keybindings, organizational, and language specific code
 
 ; org-capture
 (setq org-default-notes-file (concat org-directory "/inbox.org"))
+(setq org-capture-templates
+ '(("t" "Todo" entry (file+headline "~/org/inbox.org" "Tasks")
+        "* TODO %?\n  %i\n  %a")
+   ("m" "Memorize" entry (file+headline "~/org/inbox.org" "Facts") "* %?\n %i\n %a"))) 
+
 
 #+end_src
 
@@ -269,6 +277,7 @@ Adjusting the visual styling.
 (dim-minor-names
  '((visual-line-mode   " ↩")
    (auto-fill-function " ↵")
+   (yas-minor-mode "𝛶")
    (eldoc-mode         ""    eldoc)
    (golden-ratio-mode "φ")
    (xah-fly-keys "Σ")
@@ -276,6 +285,7 @@ Adjusting the visual styling.
    (whitespace-mode    " _"  whitespace)
    (paredit-mode       " ()" paredit)
    (ensime-mode "ϵ")
+   (company-mode "¢")
    
    ))
 

@@ -9,6 +9,7 @@ This file contains a first attempt at organizing the loading code for emacs in o
 		     all-the-icons which-key org-journal xah-fly-keys 
                      spaceline ob-ipython conda bind-key use-package
 		     clojure-mode cl leuven-theme deft org-brain typit
+                     sdcv flycheck writeroom-mode
 				   cider 4clojure sourcerer-theme zenburn-theme
 				   golden-ratio org-brain sublime-themes
 				   material-theme dim))
@@ -64,6 +65,9 @@ Loading keybindings, organizational, and language specific code
 
 (define-key xah-fly-leader-key-map
  (kbd "c") 'org-capture)
+(define-key xah-fly-leader-key-map
+ (kbd "b") 'sdcv-search-pointer)
+
 
 
 ; org-mode specific leader key sequences
@@ -221,6 +225,20 @@ Loading keybindings, organizational, and language specific code
 
 #+RESULTS:
 : /usr/bin/sbt
+
+** Misc
+
+#+begin_src emacs-lisp :tangle yes
+; syntax checking / static analysis
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+
+
+; tools to use the right dictionary
+(require 'sdcv)
+
+#+end_src 
 
 * Appearance
 Adjusting the visual styling.

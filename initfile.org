@@ -83,7 +83,9 @@ Loading keybindings, organizational, and language specific code
 (define-key afm-org-xah-keys (kbd "r") 'org-refile)
 (define-key afm-org-xah-keys (kbd "p") 'org-priority)
 (define-key afm-org-xah-keys (kbd "i") 'org-id-get-create)
-(define-key afm-org-xah-keys (kbd "n") 'anki-editor-insert-note)
+(define-key afm-org-xah-keys (kbd "c") 'anki-editor-insert-note)
+(define-key afm-org-xah-keys (kbd "n") 'org-narrow-to-subtree)
+(define-key afm-org-xah-keys (kbd "w") 'widen)
 
 (define-key xah-fly-leader-key-map (kbd "o") afm-org-xah-keys)))
 

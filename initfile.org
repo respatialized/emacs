@@ -11,7 +11,7 @@ This file contains a first attempt at organizing the loading code for emacs in o
 		     clojure-mode cl leuven-theme deft org-brain typit
                      sdcv flycheck writeroom-mode anki-editor
 				   cider 4clojure sourcerer-theme zenburn-theme
-				   golden-ratio org-brain sublime-themes
+				   golden-ratio org-brain htmlize sublime-themes
 				   material-theme dim))
 
 
@@ -125,8 +125,10 @@ Loading keybindings, organizational, and language specific code
 (setq org-capture-templates
  '(("t" "Todo" entry (file+olp "~/org/inbox.org" "Tasks")
         "* TODO %?\n  ")
+("n" "Note" entry (file+olp "~/org/inbox.org" "Notes")
+        "* %?\n  ")
    ("m" "Memorize" entry (file+olp "~/org/inbox.org" "Facts") 
-        "* %?\n "))) 
+        "* %? \t :note:\n :PROPERTIES: \n :ANKI_NOTE_TYPE: Basic \n :END: \n** Front\n\n** Back\n \n"))) 
 #+end_src
 
 ** Org-brain + Deft + Journal

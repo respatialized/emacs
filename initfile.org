@@ -107,7 +107,7 @@ Loading keybindings, organizational, and language specific code
 
 (setq org-todo-keywords '(
   (sequence "TODO(t)" "WAITING(w)" "EVENT(e)" "PROJECT(p)" "|" "COMPLETE(d)"
-   "CANCELLED(c)")
+   "CANCELLED(c)" "PAST EVENT(o)")
   (sequence "NOT GROOMED(b)" "OPEN(s)" "IN PROGRESS(a)" "EPIC(r)" "|"
   "REVIEW(y)" "DONE(f)" "WON'T DO(x)")))
 

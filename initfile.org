@@ -11,7 +11,7 @@ This file contains a first attempt at organizing the loading code for emacs in o
 		     clojure-mode cl leuven-theme deft org-brain typit
                      sdcv flycheck writeroom-mode anki-editor
 				   cider 4clojure sourcerer-theme zenburn-theme
-				   golden-ratio org-brain sublime-themes
+				   golden-ratio org-brain htmlize sublime-themes
 				   material-theme dim))
 
 
@@ -83,7 +83,9 @@ Loading keybindings, organizational, and language specific code
 (define-key afm-org-xah-keys (kbd "r") 'org-refile)
 (define-key afm-org-xah-keys (kbd "p") 'org-priority)
 (define-key afm-org-xah-keys (kbd "i") 'org-id-get-create)
-(define-key afm-org-xah-keys (kbd "n") 'anki-editor-insert-note)
+(define-key afm-org-xah-keys (kbd "c") 'anki-editor-insert-note)
+(define-key afm-org-xah-keys (kbd "n") 'org-narrow-to-subtree)
+(define-key afm-org-xah-keys (kbd "w") 'widen)
 
 (define-key xah-fly-leader-key-map (kbd "o") afm-org-xah-keys)))
 
@@ -123,8 +125,10 @@ Loading keybindings, organizational, and language specific code
 (setq org-capture-templates
  '(("t" "Todo" entry (file+olp "~/org/inbox.org" "Tasks")
         "* TODO %?\n  ")
+("n" "Note" entry (file+olp "~/org/inbox.org" "Notes")
+        "* %?\n  ")
    ("m" "Memorize" entry (file+olp "~/org/inbox.org" "Facts") 
-        "* %?\n "))) 
+        "* %? \t :note:\n :PROPERTIES: \n :ANKI_NOTE_TYPE: Basic \n :END: \n** Front\n\n** Back\n \n"))) 
 #+end_src
 
 ** Org-brain + Deft + Journal

@@ -67,8 +67,11 @@ Loading keybindings, organizational, and language specific code
  (kbd "c") 'org-capture)
 (define-key xah-fly-leader-key-map
  (kbd "b") 'sdcv-search-pointer)
+(define-key xah-fly-leader-key-map
+ (kbd "5") 'split-window-vertically)
 
-
+; enabling keyboard hints
+(which-key-mode)
 
 ; org-mode specific leader key sequences
 (add-hook 'org-mode-hook
@@ -109,7 +112,7 @@ Loading keybindings, organizational, and language specific code
 
 (setq org-todo-keywords '(
   (sequence "TODO(t)" "WAITING(w)" "EVENT(e)" "PROJECT(p)" "|" "COMPLETE(d)"
-   "CANCELLED(c)" "PAST EVENT(o)")
+   "CANCELLED(c)" "PAST EVENT(o)" "NOTE(n)")
   (sequence "NOT GROOMED(b)" "OPEN(s)" "IN PROGRESS(a)" "EPIC(r)" "|"
   "REVIEW(y)" "DONE(f)" "WON'T DO(x)")))
 
@@ -126,7 +129,7 @@ Loading keybindings, organizational, and language specific code
  '(("t" "Todo" entry (file+olp "~/org/inbox.org" "Tasks")
         "* TODO %?\n  ")
 ("n" "Note" entry (file+olp "~/org/inbox.org" "Notes")
-        "* %?\n  ")
+        "* NOTE %?\n  ")
    ("m" "Memorize" entry (file+olp "~/org/inbox.org" "Facts") 
         "* %? \t :note:\n :PROPERTIES: \n :ANKI_NOTE_TYPE: Basic \n :END: \n** Front\n\n** Back\n \n"))) 
 #+end_src

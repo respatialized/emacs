@@ -111,8 +111,8 @@ Loading keybindings, organizational, and language specific code
 
 
 (setq org-todo-keywords '(
-  (sequence "TODO(t)" "WAITING(w)" "EVENT(e)" "PROJECT(p)" "|" "COMPLETE(d)"
-   "CANCELLED(c)" "PAST EVENT(o)" "NOTE(n)")
+  (sequence "TODO(t)" "WAITING(w)" "EVENT(e)" "PROJECT(p)" "GOAL(g)" "|"
+ "COMPLETE(d)" "CANCELLED(c)" "PAST EVENT(o)" "NOTE(n)" "COMPLETE PROJECT(q)")
   (sequence "NOT GROOMED(b)" "OPEN(s)" "IN PROGRESS(a)" "EPIC(r)" "|"
   "REVIEW(y)" "DONE(f)" "WON'T DO(x)")))
 
@@ -127,12 +127,18 @@ Loading keybindings, organizational, and language specific code
 (setq org-default-notes-file (concat org-directory "/inbox.org"))
 (setq org-capture-templates
  '(("t" "Todo" entry (file+olp "~/org/inbox.org" "Tasks")
-        "* TODO %?\n  ")
+        "* TODO %?\n:PROPERTIES:\n:CREATED: %t\n:END:")
 ("n" "Note" entry (file+olp "~/org/inbox.org" "Notes")
-        "* NOTE %?\n  ")
+        "* NOTE %?\n:PROPERTIES:\n:CREATED: %t\n:END:")
    ("m" "Memorize" entry (file+olp "~/org/inbox.org" "Facts") 
-        "* %? \t :note:\n :PROPERTIES: \n :ANKI_NOTE_TYPE: Basic \n :END: \n** Front\n\n** Back\n \n"))) 
+        "* %? \t :note:\n :PROPERTIES: \n :CREATED: %t \n :ANKI_NOTE_TYPE: Basic \n :END: \n** Front\n\n** Back"))) 
 #+end_src
+
+Exporting org mode to other formats
+#+begin_src emacs-lisp :tangle yes
+(require 'ox)
+;(require 'ox-confluence)
+#+end_src 
 
 ** Org-brain + Deft + Journal
 
@@ -497,6 +503,7 @@ Adjusting the visual styling.
        (str     "#b7a96b")
        (type    "#d65e5e")
        (var     "#c76c70")
+       (c76c70 "#ff0c00")
        (warning "#ff0c00")
        (warning2 "#ff006b"))
    (custom-theme-set-faces
@@ -772,7 +779,8 @@ Adjusting the visual styling.
    (paredit-mode       " ()" paredit)
    (ensime-mode "ϵ")
    (company-mode "¢")
-   
+   (flycheck-mode "✔")
+   (which-key-mode "⌨﹖")
    ))
 
 

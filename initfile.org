@@ -10,6 +10,7 @@ This file contains a first attempt at organizing the loading code for emacs in o
                      spaceline ob-ipython conda bind-key use-package
 		     clojure-mode cl leuven-theme deft org-brain typit
                      sdcv flycheck writeroom-mode anki-editor
+                     atomic-chrome
 				   cider 4clojure sourcerer-theme zenburn-theme
 				   golden-ratio org-brain htmlize sublime-themes
 				   material-theme dim))
@@ -252,6 +253,14 @@ Exporting org mode to other formats
 
 ; tools to use the right dictionary
 (require 'sdcv)
+
+; text input for firefox/chrome in an emacs buffer 
+(require 'atomic-chrome)
+(atomic-chrome-start-server)
+(setq atomic-chrome-url-major-mode-alist
+      '(("databricks" . scala-mode)
+        ))
+
 
 #+end_src 
 

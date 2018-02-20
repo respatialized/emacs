@@ -10,7 +10,7 @@ This file contains a first attempt at organizing the loading code for emacs in o
                      spaceline ob-ipython conda bind-key use-package
 		     clojure-mode cl leuven-theme deft org-brain typit
                      sdcv flycheck writeroom-mode anki-editor
-                     atomic-chrome
+                     atomic-chrome nov
 				   cider 4clojure sourcerer-theme zenburn-theme
 				   golden-ratio org-brain htmlize sublime-themes
 				   material-theme dim))
@@ -261,6 +261,8 @@ Exporting org mode to other formats
       '(("databricks" . scala-mode)
         ))
 
+; ebook reader
+(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 
 #+end_src 
 
@@ -790,6 +792,7 @@ Adjusting the visual styling.
    (company-mode "¢")
    (flycheck-mode "✔")
    (which-key-mode "⌨﹖")
+   (atomic-chrome-edit-mode "⚛")
    ))
 
 
@@ -824,6 +827,11 @@ Adjusting the visual styling.
 
 ))
 
+; Ebook prettification
+(defun my-nov-font-setup ()
+  (face-remap-add-relative 'variable-pitch :family "Charter"
+                                           :height 1.0))
+(add-hook 'nov-mode-hook 'my-nov-font-setup)
 
 
 #+end_src

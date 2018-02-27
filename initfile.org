@@ -128,10 +128,10 @@ Loading keybindings, organizational, and language specific code
 (setq org-default-notes-file (concat org-directory "/inbox.org"))
 (setq org-capture-templates
  '(("t" "Todo" entry (file+olp "~/org/inbox.org" "Tasks")
-        "* TODO %?\n:PROPERTIES:\n:CREATED: %t\n:END:"
+        "* TODO %?\n:PROPERTIES:\n:CREATED: %t\n:END:\n"
         :empty-lines 1)
 ("n" "Note" entry (file+olp "~/org/inbox.org" "Notes")
-        "* NOTE %?\n:PROPERTIES:\n:CREATED: %t\n:END:"
+        "* NOTE %?\n:PROPERTIES:\n:CREATED: %t\n:END:\n"
         :empty-lines 1)
    ("m" "Memorize" entry (file+olp "~/org/inbox.org" "Facts") 
         "* %? \t :note:\n :PROPERTIES: \n :CREATED: %t \n :ANKI_NOTE_TYPE: Basic \n :END: \n** Front\n\n** Back"

@@ -106,7 +106,8 @@ Loading keybindings, organizational, and language specific code
 
 (setq org-refile-targets '(("~/org/gtd.org" :maxlevel . 3)
                            ("~/org/someday.org" :level . 1)
-                           ("~/org/upcoming.org" :maxlevel . 2)))
+                           ("~/org/upcoming.org" :maxlevel . 2)
+                           ("~/orgbrain/decks.org" :maxlevel . 2)))
 (setq org-outline-path-complete-in-steps t)
 (setq org-refile-use-outline-path 'file)
 
@@ -788,7 +789,7 @@ Adjusting the visual styling.
    (eldoc-mode         ""    eldoc)
    (golden-ratio-mode "φ")
    (xah-fly-keys "Σ")
-   (buffer-face-mode "β")
+   (buffer-face "β")
    (whitespace-mode    " _"  whitespace)
    (paredit-mode       " ()" paredit)
    (ensime-mode "ϵ")

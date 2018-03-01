@@ -10,9 +10,9 @@ This file contains a first attempt at organizing the loading code for emacs in o
                      spaceline ob-ipython conda bind-key use-package
 		     clojure-mode cl leuven-theme deft org-brain typit
                      sdcv flycheck writeroom-mode anki-editor
-                     atomic-chrome nov
+                     atomic-chrome nov org-noter pdf-tools
 				   cider 4clojure sourcerer-theme zenburn-theme
-				   golden-ratio org-brain htmlize sublime-themes
+				   golden-ratio htmlize sublime-themes
 				   material-theme dim))
 
 

@@ -10,7 +10,7 @@ This file contains a first attempt at organizing the loading code for emacs in o
                      spaceline ob-ipython conda bind-key use-package
 		     clojure-mode cl leuven-theme deft org-brain typit
                      sdcv flycheck writeroom-mode anki-editor
-                     atomic-chrome pdf-tools
+                     atomic-chrome pdf-tools magithub
                                    nov org-noter
 				   cider 4clojure sourcerer-theme zenburn-theme
 				   golden-ratio htmlize sublime-themes
@@ -49,10 +49,11 @@ Loading keybindings, organizational, and language specific code
 
 #+begin_src emacs-lisp :tangle yes
 ;; Xah-Fly-Keys setup
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-(require 'xah-fly-keys)
-(xah-fly-keys-set-layout "qwerty") ; required if you use qwerty
+(use-package xah-fly-keys
+  :ensure t
+  :pin melpa)
 (xah-fly-keys 1)
+(xah-fly-keys-set-layout "qwerty") ; required if you use qwerty
 
 ;; Xah Fly Keys customization
 
@@ -95,6 +96,20 @@ Loading keybindings, organizational, and language specific code
 (define-key xah-fly-leader-key-map (kbd "o") afm-org-xah-keys)))
 
 
+
+#+end_src
+
+** Git
+Tools for working with Git (and Github) from within GNU Emacs.
+
+#+begin_src emacs-lisp :tangle yes
+
+(require 'magit) 
+(require 'ghub) ; magit and ghub need to be initialized before magithub
+
+(require 'magithub)
+(magithub-feature-autoinject t)
+(setq magithub-clone-default-directory "~/repos")
 
 #+end_src
 
@@ -790,7 +805,7 @@ Adjusting the visual styling.
    (eldoc-mode         ""    eldoc)
    (golden-ratio-mode "φ")
    (xah-fly-keys "Σ")
-   (buffer-face "β")
+   (buffer-face-mode "β")
    (whitespace-mode    " _"  whitespace)
    (paredit-mode       " ()" paredit)
    (ensime-mode "ϵ")

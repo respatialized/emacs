@@ -10,7 +10,7 @@ This file contains a first attempt at organizing the loading code for emacs in o
                      spaceline ob-ipython conda bind-key use-package
 		     clojure-mode cl leuven-theme deft org-brain typit
                      sdcv flycheck writeroom-mode anki-editor
-                     atomic-chrome pdf-tools
+                     atomic-chrome pdf-tools yaml-mode
                                    nov org-noter
 				   cider 4clojure sourcerer-theme zenburn-theme
 				   golden-ratio htmlize sublime-themes
@@ -172,7 +172,7 @@ Exporting org mode to other formats
     (deft)))
 
 ; org-journal
-(setq org-journal-dir "~/org/journal")
+(setq org-journal-dir "~/orgbrain/journal")
 (require 'org-journal)
 
 
@@ -268,6 +268,10 @@ Exporting org mode to other formats
 
 ; ebook reader
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+
+; YAML editing
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 
 #+end_src 
 

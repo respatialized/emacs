@@ -200,13 +200,12 @@ Exporting org mode to other formats
 #+end_src
 
 ** Org-babel
-
+Interactive evaluation of code blocks of various languages.
 #+begin_src emacs-lisp :tangle yes
 
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((ipython . t)
-   (shell .t)
    (clojure . t)
    (shell .t)
    (ditaa .t)

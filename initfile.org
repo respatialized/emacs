@@ -11,7 +11,7 @@ This file contains a first attempt at organizing the loading code for emacs in o
 		     clojure-mode cl leuven-theme deft org-brain typit
                      sdcv flycheck writeroom-mode anki-editor
                      atomic-chrome pdf-tools magithub yaml-mode
-                                   nov org-noter org-download
+                                   nov org-noter org-download undo-tree
 				   cider 4clojure sourcerer-theme zenburn-theme
 				   golden-ratio htmlize sublime-themes
 				   material-theme dim))
@@ -209,6 +209,7 @@ Interactive evaluation of code blocks of various languages.
    (clojure . t)
    (shell .t)
    (ditaa .t)
+   (dot . t)
    (python . t)
    (scala . t)))
 
@@ -295,6 +296,9 @@ Interactive evaluation of code blocks of various languages.
 ; YAML editing
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+
+; visualizing the changes to a buffer
+(undo-tree-mode)
 
 #+end_src 
 
@@ -822,6 +826,7 @@ Adjusting the visual styling.
    (paredit-mode       " ()" paredit)
    (ensime-mode "ϵ")
    (company-mode "¢")
+   (undo-tree-mode "⸙")
    (flycheck-mode "✔")
    (which-key-mode "⌨﹖")
    (atomic-chrome-edit-mode "⚛")

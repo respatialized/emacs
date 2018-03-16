@@ -9,8 +9,8 @@ This file contains a first attempt at organizing the loading code for emacs in o
 		     all-the-icons which-key org-journal xah-fly-keys 
                      spaceline ob-ipython conda bind-key use-package
 		     clojure-mode cl leuven-theme deft org-brain typit
-                     sdcv flycheck writeroom-mode anki-editor
-                     atomic-chrome pdf-tools magithub yaml-mode
+                     sdcv flycheck writeroom-mode anki-editor graphviz-dot-mode
+                     atomic-chrome pdf-tools magithub yaml-mode column-enforce-mode
                                    nov org-noter org-download undo-tree
 				   cider 4clojure sourcerer-theme zenburn-theme
 				   golden-ratio htmlize sublime-themes
@@ -66,6 +66,10 @@ Loading keybindings, organizational, and language specific code
  (kbd "w") 'org-agenda)
 
 (define-key xah-fly-leader-key-map
+ (kbd "<backtab>") 'yas-expand)
+
+
+(define-key xah-fly-leader-key-map
  (kbd "c") 'org-capture)
 (define-key xah-fly-leader-key-map
  (kbd "b") 'sdcv-search-pointer)
@@ -82,6 +86,7 @@ Loading keybindings, organizational, and language specific code
   (define-key afm-org-xah-keys (kbd "a") 'org-archive-subtree)
   (define-key afm-org-xah-keys (kbd "s") 'org-schedule)
   (define-key afm-org-xah-keys (kbd "d") 'org-deadline)
+  (define-key afm-org-xah-keys (kbd "j") 'org-journal-new-entry)
   (define-key afm-org-xah-keys (kbd ".") 'org-timestamp)
   (define-key afm-org-xah-keys (kbd "l") 'org-set-tags-command)
   (define-key afm-org-xah-keys (kbd "r") 'org-refile)
@@ -173,7 +178,7 @@ Exporting org mode to other formats
 
 ; org-brain
 (require 'org-brain)
-(setq org-brain-path "~/orgbrain")
+(setq org-brain-path "~/repos_main/orgbrain")
 (setq org-id-track-globally t)
 (setq org-id-locations-file "~/.emacs.d/.org-id-locations")
 
@@ -181,7 +186,7 @@ Exporting org mode to other formats
 
 (require 'deft)
 (setq deft-extensions '("org"))
-(setq deft-directory "~/orgbrain")
+(setq deft-directory org-brain-path)
 (setq deft-recursive t)
 
 (defun org-brain-deft ()
@@ -193,7 +198,7 @@ Exporting org mode to other formats
     (deft)))
 
 ; org-journal
-(setq org-journal-dir "~/orgbrain/journal")
+(setq org-journal-dir (concat org-brain-path "/journal"))
 (require 'org-journal)
 
 
@@ -288,7 +293,7 @@ Interactive evaluation of code blocks of various languages.
 (atomic-chrome-start-server)
 (setq atomic-chrome-url-major-mode-alist
       '(("databricks" . scala-mode)
-        ))
+        ("ipynb" . python-mode)))
 
 ; ebook reader
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
@@ -826,6 +831,7 @@ Adjusting the visual styling.
    (paredit-mode       " ()" paredit)
    (ensime-mode "ϵ")
    (company-mode "¢")
+   (column-enforce-mode "↹")
    (undo-tree-mode "⸙")
    (flycheck-mode "✔")
    (which-key-mode "⌨﹖")
@@ -843,7 +849,8 @@ Adjusting the visual styling.
    (org-agenda-mode            "☑")
 ))
 
-
+; width guidelines
+(global-column-enforce-mode t)
 
 ; org mode keywords
 (setq org-todo-keyword-faces

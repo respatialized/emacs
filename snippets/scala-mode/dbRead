@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dbRead
+# key: dbRead
+# --
+val x = sqlContext.read.parquet("/mnt/research/andrew/...")

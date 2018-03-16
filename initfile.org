@@ -131,7 +131,7 @@ Tools for working with Git (and Github) from within GNU Emacs.
 (setq org-refile-targets '(("~/org/gtd.org" :maxlevel . 3)
                            ("~/org/someday.org" :level . 1)
                            ("~/org/upcoming.org" :maxlevel . 2)
-                           ("~/orgbrain/decks.org" :maxlevel . 2)))
+                           ("~/repos_main/orgbrain/decks.org" :maxlevel . 2)))
 (setq org-outline-path-complete-in-steps t)
 (setq org-refile-use-outline-path 'file)
 

@@ -1,0 +1,64 @@
+* initfile.org
+
+* Initialization steps
+The code below compiles to init.el, the file that emacs expects when first booting up. By reading the code from that file, it will then execute the rest of the code in this org-babel file. This contains a minimal setup, so that we can use ~use-package~ to load packages section-by-section.
+#+begin_src emacs-lisp :tangle init.el
+
+#+end_src
+
+* Keybindings
+Emacs' default keybindings are linked with repetitive strain injury. Xah-Fly-Keys emphasizes modal editing (similar to Vim) and key sequences to avoid the strain associated with pressing key chords.
+#+begin_src emacs-lisp :tangle yes
+(use-package xah-fly-keys
+  :ensure t
+  :pin melpa
+  :config ; custom keybindings for common commands I use.
+  (xah-fly-keys 1)
+  (xah-fly-keys-set-layout "qwerty")
+  (define-key xah-fly-leader-key-map
+   (kbd "z") 'comment-region)
+  (define-key xah-fly-leader-key-map
+   (kbd "w") 'org-agenda)
+  (define-key xah-fly-leader-key-map
+   (kbd "<backtab>") 'yas-expand)
+  (define-key xah-fly-leader-key-map
+   (kbd "c") 'org-capture)
+  (define-key xah-fly-leader-key-map
+   (kbd "b") 'sdcv-search-pointer)
+  (define-key xah-fly-leader-key-map
+   (kbd "5") 'split-window-vertically)
+)
+
+#+end_src
+
+
+* Language tooling
+** Python
+** Clojure
+** Scala
+* Organizational Tools
+** Discoverability
+These tools make it easier to figure out what it's possible to do within Emacs, within filesystems, and within whatever language we're working with.
+
+Ivy/Counsel/Swiper
+#+begin_src emacs-lisp :tangle yes
+(use-package ivy
+  :ensure t
+  :pin melpa
+  :config
+  (ivy-mode 1)
+  (counsel-mode 1)
+)
+#+end_src
+
+
+~which-key~ makes the commands associated with key sequences more visible.
+#+begin_src emacs-lisp :tangle yes
+(use-package which-key
+  :ensure t
+  :pin melpa
+  :config
+  (which-key-mode)
+)
+#+end_src
+

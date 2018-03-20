@@ -270,6 +270,7 @@ Interactive evaluation of code blocks of various languages.
 (use-package scala-mode
   :pin melpa)
 
+(setq ensime-startup-notification nil)
 
 #+end_src
 

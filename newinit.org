@@ -49,12 +49,175 @@ Emacs' default keybindings are linked with repetitive strain injury. Xah-Fly-Key
 
 #+end_src
 
+* Version Control
+Tools that make it easier to ensure that all changes are tracked under revision control.
+#+begin_src emacs-lisp
+(use-package 'magit
+  :ensure t
+  :pin melpa)
 
+(use-package 'ghub
+  :ensure t
+  :pin melpa)
+
+(require 'magithub
+  :ensure t
+  :pin melpa
+  :config
+  (magithub-clone-default-directory "~/repos_external")
+
+#+end_src
 * Language tooling
 ** Python
+Tooling that offers interactive evaluation of Python code and facilitates working with virtual environments via Anaconda.
+#+begin_src emacs-lisp 
+(use-package 'ein
+  :pin melpa
+  :ensure t
+)
+#+end_src
 ** Clojure
+#+begin_src emacs-lisp 
+(use-package 'cider
+  :pin melpa
+  :ensure t
+)
+
+
+#+end_src
+
 ** Scala
+#+begin_src emacs-lisp
+(use-package ensime
+  :ensure t
+  :pin melpa
+  :config
+  (setq ensime-sbt-command "/usr/bin/sbt"
+    sbt:program-name "/usr/bin/sbt")
+  (setq ensime-startup-notification nil)
+)
+
+(use-package sbt-mode
+  :pin melpa)
+(use-package scala-mode
+  :pin melpa)
+
+#+end_src
+
+** YAML
+#+begin_src emacs-lisp
+(use-package 'yaml-mode
+  :pin melpa
+  :config
+  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+)
+#+end_src
+
+** Plotting
+
+#+begin_src emacs-lisp
+(use-package 'graphviz-dot-mode
+  :pin melpa
+)
+#+end_src
+
+** Org-Babel
+Interactive evaluation of source code in org-babel blocks
+#+begin_src emacs-lisp 
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((ipython . t)
+   (clojure . t)
+   (shell .t)
+   (ditaa .t)
+   (dot . t)
+   (python . t)
+   (scala . t)))
+
+(setq org-src-tab-acts-natively t)
+
+
+(use-package 'ob-clojure
+  :pin melpa
+  :ensure t
+  :config
+  (setq org-babel-clojure-backend 'cider)
+)
+#+end_src
+(use-package 'ob-clojre
 * Organizational Tools
+** Org-Mode
+A pretty good way of organizing hierarchical information, and a pretty helpful task manager. The code below sets up org-mode for task management.
+#+begin_src emacs-lisp
+(require 'org)
+(setq org-refile-targets '(("~/org/gtd.org" :maxlevel . 3)
+                           ("~/org/someday.org" :level . 1)
+                           ("~/org/upcoming.org" :maxlevel . 2)
+                           ("~/repos_main/orgbrain/decks.org" :maxlevel . 2)))
+(setq org-outline-path-complete-in-steps t)
+(setq org-refile-use-outline-path 'file)
+
+
+(setq org-todo-keywords '(
+  (sequence "TODO(t)" "WAITING(w)" "EVENT(e)" "PROJECT(p)" "GOAL(g)" "|"
+ "COMPLETE(d)" "CANCELLED(c)" "PAST EVENT(o)" "NOTE(n)" "COMPLETE PROJECT(q)")
+  (sequence "NOT GROOMED(b)" "OPEN(s)" "IN PROGRESS(a)" "EPIC(r)" "|"
+  "REVIEW(y)" "DONE(f)" "WON'T DO(x)")))
+
+
+
+
+; org-agenda
+(setq org-agenda-files '("~/org/gtd.org"
+                         "~/org/upcoming.org"))
+
+(setq org-default-notes-file (concat org-directory "/inbox.org"))
+(setq org-capture-templates
+ '(("t" "Todo" entry (file+olp "~/org/inbox.org" "Tasks")
+        "* TODO %?\n:PROPERTIES:\n:CREATED: %u\n:END:\n"
+        :empty-lines 1)
+("n" "Note" entry (file+olp "~/org/inbox.org" "Notes")
+        "* NOTE %?\n:PROPERTIES:\n:CREATED: %u\n:END:\n"
+        :empty-lines 1)
+   ("m" "Memorize" entry (file+olp "~/org/inbox.org" "Facts") 
+        "* %? \t :note:\n :PROPERTIES: \n :CREATED: %u \n :ANKI_NOTE_TYPE: Basic \n :END: \n** Front\n\n** Back"
+        :empty-lines 1))) 
+#+end_src
+Org-mode is also a pretty effective way of composing information to be exported to another format. 
+#+begin_src emacs-lisp
+(require 'ox)
+(use-package 'org-download
+  :pin melpa
+)
+#+end_src
+Org-mode can also be used as a personal information manager and help set up flashcards for use with Anki, the spaced repetition app.
+
+#+begin_src emacs-lisp
+(use-package org-brain
+  :pin melpa
+  :ensure t
+  :config
+  (setq org-brain-path "~/repos_main/orgbrain")
+  (setq org-id-track-globally t)
+  (setq org-id-locations-file "~/.emacs.d/.org-id-locations")
+)
+
+(use-package deft
+  :pin melpa
+  :config
+  (setq deft-extensions '("org"))
+  (setq deft-directory org-brain-path)
+  (setq deft-recursive t)
+)
+
+(use-package org-journal
+  :pin melpa
+  :ensure t
+  :config
+  (setq org-journal-dir (concat org-brain-path "/journal"))
+)
+
+#+end_src
 ** Discoverability
 These tools make it easier to figure out what it's possible to do within Emacs, within filesystems, and within whatever language we're working with.
 
@@ -78,6 +241,44 @@ Ivy/Counsel/Swiper
   :config
   (which-key-mode)
 )
+#+end_src
+** Editing Helpers
+These tools make working with text (source code, prose, input boxes) easier. Flycheck helps spot syntax errors, sdcv helps define words, and atomic-chrome allows for much more efficient entry of text into browser fields (using emacs).
+
+#+begin_src emacs-lisp
+(use-package flycheck
+  :pin melpa
+  :ensure t
+  :config (global-flycheck-mode))
+
+(use-package sdcv
+  :pin melpa
+  :ensure t
+)
+
+(use-package nov
+  :pin melpa
+  :config
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+)
+
+(use-package atomic-chrome
+  :pin melpa
+  :ensure t
+  :config
+  (setq atomic-chrome-url-major-mode-alist
+    '(("databricks" . scala-mode)
+      ("ipynb" . python-mode)))
+  (atomic-chrome-start-server)
+)
+
+(use-package undo-tree
+  :pin melpa
+  :ensure t
+  :config
+  (global-undo-tree-mode)
+)
+
 #+end_src
 * Appearance
 ** Custom theme: wold
@@ -311,6 +512,7 @@ Ivy/Counsel/Swiper
 (load-theme 'wold t)
 
 #+end_src
+** Other appearance options
 
 Golden ratio keeps the active window the largest, resizing the others according to the golden ratio.
 #+begin_src emacs-lisp :tangle yes
@@ -323,17 +525,17 @@ Golden ratio keeps the active window the largest, resizing the others according 
 
 #+end_src
 
-Overpass Mono is currently the best programming font that I know of. Its regular sans companion font unifies the interface very well.
+League Mono is currently the best programming font that I know of. 
 #+begin_src emacs-lisp :tangle yes
 (add-to-list 'default-frame-alist
-  '(font . "Overpass Mono-13"))
+  '(font . "League Mono-12.5"))
 
-(set-face-font 'fixed-pitch "Overpass Mono-13")
-(set-face-font 'variable-pitch "Overpass-14:spacing=110")
-(set-face-font 'org-column "Overpass Mono-13")
-(set-face-font 'mode-line "Overpass Mono-10.5")
-(set-face-font 'mode-line-inactive "Overpass Mono-10.5")
-(set-face-font 'linum "Overpass Mono-10.5")
+(set-face-font 'fixed-pitch "League Mono-12.5")
+(set-face-font 'variable-pitch "IBM Plex Sans-14:spacing=110")
+(set-face-font 'org-column "League Mono-12.5")
+(set-face-font 'mode-line "League Mono-10.5")
+(set-face-font 'mode-line-inactive "League Mono-10.5")
+(set-face-font 'linum "League Mono-10.5")
 
   (defun set-buffer-variable-pitch ()
     (interactive)

@@ -266,7 +266,20 @@ Ivy/Counsel/Swiper
   :pin melpa
   :config
   (ivy-mode 1)
+  
+)
+
+(use-package counsel
+  :ensure t
+  :pin melpa
+  :config
   (counsel-mode 1)
+)
+
+(use-package swiper
+  :pin melpa
+  :config
+;  (swiper-mode 1)
 )
 #+end_src
 
@@ -594,8 +607,72 @@ League Mono is currently the best programming font that I know of.
 
 #+end_src
 
-These features are used to make the rest of the interface look prettier
+These features are used to make the rest of the interface look prettier.
 #+begin_src emacs-lisp  
+(use-package spaceline
+  :pin melpa
+  :config
+  (require 'spaceline-config)
+  (spaceline-emacs-theme)
+)
+
+(use-package dim
+  :pin melpa
+  :config
+  (dim-minor-names
+ '((visual-line-mode   " ↩")
+   (auto-fill-function " ↵")
+   (yas-minor-mode "𝛶")
+   (eldoc-mode         ""    eldoc)
+   (golden-ratio-mode "φ")
+   (xah-fly-keys "Σ")
+   (buffer-face-mode "β")
+   (whitespace-mode    " _"  whitespace)
+   (paredit-mode       " ()" paredit)
+   (ensime-mode "ϵ")
+   (company-mode "¢")
+   (column-enforce-mode "↹")
+   (undo-tree-mode "⸙")
+   (flycheck-mode "✔")
+   (which-key-mode "⌨﹖")
+   (atomic-chrome-edit-mode "⚛")
+   ))
+ (dim-major-names
+ '((emacs-lisp-mode           "EL")
+   (scala-mode "﻿Ｓ")
+   (ensime-inf-mode "ϵ>")
+   (inferior-emacs-lisp-mode  "EL>")
+   (calendar-mode             "📆")
+   (org-mode "✎")
+   (org-agenda-mode            "☑")
+ ))
+)
+
+(global-column-enforce-mode t)
+
+(setq org-todo-keyword-faces
+  '(("TODO" . (:background "firebrick" :foreground "gray18"))
+   ("WAITING" . (:background "tomato" :foreground "gray18"))
+   ("EVENT" . (:background "burlywood" :foreground "gray18"))
+   ("PROJECT" . (:background "deep sky blue" :foreground "gray18"))
+   ("COMPLETE" . (:background "SpringGreen3" :foreground "gray18"))
+   ("CANCELLED" .  (:background "tan" :foreground "gray18"))
+; JIRA colors
+   ("NOT GROOMED" .  (:background "slate gray" :foreground "white smoke"))
+   ("EPIC" .  (:background "coral3" :foreground "white smoke"))
+   ("OPEN" .  (:background "cadet blue" :foreground "white smoke"))
+   ("IN PROGRESS" .  (:background "steel blue" :foreground "white smoke"))
+   ("REVIEW" .  (:background "sea green" :foreground "white smoke"))
+   ("DONE" .  (:background "forest green" :foreground "white smoke"))
+   ("WON'T DO" .  (:background "rosy brown" :foreground "white smoke"))
+
+))
+
+; Ebook prettification
+(defun my-nov-font-setup ()
+  (face-remap-add-relative 'variable-pitch :family "Charter"
+                                           :height 1.0))
+(add-hook 'nov-mode-hook 'my-nov-font-setup)
 
 #+end_src 
 * Utility

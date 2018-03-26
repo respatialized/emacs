@@ -254,6 +254,33 @@ Org-mode can also be used as a personal information manager and help set up flas
   :config
   (setq org-journal-dir (concat org-brain-path "/journal"))
 )
+#+end_src
+
+Org-mode has enough features that custom keymaps are a worthwhile idea.
+
+#+begin_src emacs-lisp
+
+(defun afm/xah-org-setup () 
+  (setq afm/org-xah-keys (make-sparse-keymap))
+  (define-key afm/org-xah-keys (kbd "t") 'org-todo)
+  (define-key afm/org-xah-keys (kbd "a") 'org-archive-subtree)
+  (define-key afm/org-xah-keys (kbd "s") 'org-schedule)
+  (define-key afm/org-xah-keys (kbd "d") 'org-deadline)
+  (define-key afm/org-xah-keys (kbd "j") 'org-journal-new-entry)
+  (define-key afm/org-xah-keys (kbd ".") 'org-timestamp)
+  (define-key afm/org-xah-keys (kbd "l") 'org-set-tags-command)
+  (define-key afm/org-xah-keys (kbd "r") 'org-refile)
+  (define-key afm/org-xah-keys (kbd "p") 'org-priority)
+  (define-key afm/org-xah-keys (kbd "i") 'org-id-get-create)
+  (define-key afm/org-xah-keys (kbd "c") 'anki-editor-insert-note)
+  (define-key afm/org-xah-keys (kbd "n") 'org-narrow-to-subtree)
+  (define-key afm/org-xah-keys (kbd "w") 'widen)
+  (define-key xah-fly-leader-key-map (kbd "o") afm/org-xah-keys)
+  (define-key xah-fly-leader-key-map
+    (kbd "e") 'org-babel-execute-src-block)
+)
+
+(add-hook 'org-mode-hook 'afm/xah-org-setup)
 
 #+end_src
 ** Discoverability

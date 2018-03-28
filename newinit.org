@@ -163,8 +163,7 @@ Interactive evaluation of source code in org-babel blocks
 #+begin_src emacs-lisp  
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((ipython . t)
-   (clojure . t)
+ '((clojure . t)
    (shell .t)
    (ditaa .t)
    (dot . t)
@@ -191,10 +190,9 @@ A pretty good way of organizing hierarchical information, and a pretty helpful t
 (setq org-refile-targets '(("~/org/gtd.org" :maxlevel . 3)
                            ("~/org/someday.org" :level . 1)
                            ("~/org/upcoming.org" :maxlevel . 2)
-                           ("~/repos_main/orgbrain/decks.org" :maxlevel . 2)))
-(setq org-outline-path-complete-in-steps t)
-(setq org-refile-use-outline-path 'file)
-
+                           ("~/repos_main/orgbrain/decks.org" :maxlevel . 1)))
+(setq org-refile-use-outline-path 'file
+      org-outline-path-complete-in-steps nil)
 
 (setq org-todo-keywords '(
   (sequence "TODO(t)" "WAITING(w)" "EVENT(e)" "PROJECT(p)" "GOAL(g)" "|"
@@ -283,6 +281,7 @@ Org-mode has enough features that custom keymaps are a worthwhile idea.
 (add-hook 'org-mode-hook 'afm/xah-org-setup)
 
 #+end_src
+
 ** Discoverability
 These tools make it easier to figure out what it's possible to do within Emacs, within filesystems, and within whatever language we're working with.
 
@@ -307,6 +306,21 @@ Ivy/Counsel/Swiper
   :pin melpa
   :config
 ;  (swiper-mode 1)
+)
+
+(use-package counsel-dash
+  :ensure t
+  :pin melpa
+  :config
+  (setq counsel-dash-common-docsets 
+    '("Bash" "Clojure" "Emacs_Lisp" "Java_SE8" "Pandas" "Python_3" "Racket"
+      "Scala"))
+  (setq counsel-dash-docsets-path "~/.docsets")
+  (add-hook 'scala-mode-hook (lambda () 
+    (setq-local counsel-dash-docsets '("Scala" "Java_SE8"))))
+  (add-hook 'clojure-mode-hook (lambda () 
+    (setq-local counsel-dash-docsets '("Clojure"))))
+  
 )
 #+end_src
 
@@ -358,6 +372,15 @@ These tools make working with text (source code, prose, input boxes) easier. Fly
 )
 
 #+end_src
+** Others
+Control spotify from within emacs
+#+begin_src emacs-lisp
+(use-package counsel-spotify
+  :pin melpa
+  :ensure t
+)
+#+end_src
+
 * Appearance
 ** Custom theme: wold
 

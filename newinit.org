@@ -74,15 +74,18 @@ Emacs' default keybindings are linked with repetitive strain injury. Xah-Fly-Key
    (kbd "z") 'comment-region)
   (define-key xah-fly-leader-key-map
    (kbd "w") 'org-agenda)
-  (define-key xah-fly-leader-key-map
-   (kbd "<backtab>") 'yas-expand)
+
   (define-key xah-fly-leader-key-map
    (kbd "c") 'org-capture)
   (define-key xah-fly-leader-key-map
    (kbd "b") 'sdcv-search-pointer)
   (define-key xah-fly-leader-key-map
    (kbd "5") 'split-window-vertically)
+
 )
+  (define-key xah-fly-key-map
+   (kbd "<backtab>") 'yas-expand)
+
 
 #+end_src
 
@@ -193,7 +196,8 @@ A pretty good way of organizing hierarchical information, and a pretty helpful t
                            ("~/repos_main/orgbrain/decks.org" :maxlevel . 1)))
 (setq org-refile-use-outline-path 'file
       org-outline-path-complete-in-steps nil)
-
+; I capture a lot of multi-level files, so I want to make sure they get captured in total
+(add-hook 'org-capture-prepare-finalize-hook 'beginning-of-buffer)
 (setq org-todo-keywords '(
   (sequence "TODO(t)" "WAITING(w)" "EVENT(e)" "PROJECT(p)" "GOAL(g)" "|"
  "COMPLETE(d)" "CANCELLED(c)" "PAST EVENT(o)" "NOTE(n)" "COMPLETE PROJECT(q)")
@@ -305,7 +309,8 @@ Ivy/Counsel/Swiper
 (use-package swiper
   :pin melpa
   :config
-;  (swiper-mode 1)
+   (define-key xah-fly-key-map
+    (kbd "n") 'swiper)
 )
 
 (use-package counsel-dash
@@ -382,6 +387,18 @@ Control spotify from within emacs
 #+end_src
 
 * Appearance
+** Pre-made themes
+#+begin_src emacs-lisp
+(use-package alect-themes
+  :pin melpa
+  :ensure t
+)
+
+(use-package apropospriate-theme
+  :pin melpa
+  :ensure t
+)
+#+end_src
 ** Custom theme: wold
 
 #+begin_src emacs-lisp :tangle wold-theme.el
@@ -608,11 +625,16 @@ Control spotify from within emacs
 #+end_src
 
 #+begin_src emacs-lisp  
-
 (load-file "~/.emacs.d/wold-theme.el")
-(load-theme 'wold t)
-
 #+end_src
+** Setting the theme
+#+begin_src emacs-lisp
+(load-theme 'wold t)
+#+end_src
+
+#+RESULTS:
+: t
+
 ** Other appearance options
 
 Golden ratio keeps the active window the largest, resizing the others according to the golden ratio.
@@ -727,6 +749,9 @@ These features are used to make the rest of the interface look prettier.
                                            :height 1.0))
 (add-hook 'nov-mode-hook 'my-nov-font-setup)
 #+end_src 
+
+#+RESULTS:
+| my-nov-font-setup |
 
 Finally, we'll disable some things we don't need when working in a keyboard-centric text editor.
 #+begin_src emacs-lisp

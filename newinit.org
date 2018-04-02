@@ -28,6 +28,13 @@ The code below compiles to init.el, the file that emacs expects when first booti
        (require 'org)
        (org-babel-load-file (expand-file-name "newinit.org" user-emacs-directory))))
 
+(if (require 'quelpa nil t)
+    (quelpa-self-upgrade)
+  (with-temp-buffer
+    (url-insert-file-contents "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
+    (eval-buffer))) 
+
+
 ;; init.el ends here
 
 #+end_src
@@ -61,7 +68,16 @@ The code below compiles to init.el, the file that emacs expects when first booti
 
 #+end_src
 
+* Internal Dependencies
+#+begin_src emacs-lisp
+(use-package quelpa-use-package
+  :ensure t
+  :init (setq quelpa-update-melpa-p nil)
+)
+#+end_src
+
 * Keybindings
+
 Emacs' default keybindings are linked with repetitive strain injury. Xah-Fly-Keys emphasizes modal editing (similar to Vim) and key sequences to avoid the strain associated with pressing key chords.
 #+begin_src emacs-lisp  
 (use-package xah-fly-keys
@@ -107,6 +123,7 @@ Tools that make it easier to ensure that all changes are tracked under revision 
   (setq magithub-clone-default-directory "~/repos_external")
 )
 #+end_src
+
 * Language tooling
 ** Python
 Tooling that offers interactive evaluation of Python code and facilitates working with virtual environments via Anaconda.
@@ -325,6 +342,7 @@ Ivy/Counsel/Swiper
     (setq-local counsel-dash-docsets '("Scala" "Java_SE8"))))
   (add-hook 'clojure-mode-hook (lambda () 
     (setq-local counsel-dash-docsets '("Clojure"))))
+  (setq counsel-dash-browser-func 'eww)
   
 )
 #+end_src
@@ -338,6 +356,21 @@ Ivy/Counsel/Swiper
   :config
   (which-key-mode)
 )
+#+end_src
+
+File browsing utilities
+#+begin_src emacs-lisp
+
+(use-package dired-subtree
+  :ensure t
+  :pin melpa
+)
+
+(use-package ranger
+  :ensure t
+  :pin melpa
+)
+
 #+end_src
 ** Editing Helpers
 These tools make working with text (source code, prose, input boxes) easier. Flycheck helps spot syntax errors, sdcv helps define words, and atomic-chrome allows for much more efficient entry of text into browser fields (using emacs).
@@ -392,13 +425,49 @@ Control spotify from within emacs
 (use-package alect-themes
   :pin melpa
   :ensure t
+  :defer t
 )
 
 (use-package apropospriate-theme
   :pin melpa
   :ensure t
+  :defer t
 )
+
+(use-package zerodark-theme
+  :pin melpa
+  :ensure t
+  :defer t
+)
+
+(use-package creamsody-theme
+  :pin melpa
+  :ensure t
+  :defer t
+)
+
+(use-package darktooth-theme
+  :pin melpa
+  :ensure t
+  :defer t
+  :config 
+  (darktooth-modeline)
+)
+
+(use-package doom-themes
+  :pin melpa
+  :ensure t
+  :defer t
+  :config 
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+      doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (doom-themes-org-config)
+)
+
+
+
 #+end_src
+
 ** Custom theme: wold
 
 #+begin_src emacs-lisp :tangle wold-theme.el
@@ -681,12 +750,37 @@ League Mono is currently the best programming font that I know of.
 
 These features are used to make the rest of the interface look prettier.
 #+begin_src emacs-lisp  
+(use-package font-lock+
+  :ensure t
+  :quelpa
+  (font-lock+ :repo "emacsmirror/font-lock-plus" :fetcher github))
+
 (use-package spaceline
   :pin melpa
   :config
   (require 'spaceline-config)
   (spaceline-emacs-theme)
 )
+
+(use-package all-the-icons
+  :pin melpa
+  :ensure t
+)
+
+(use-package all-the-icons-dired
+  :pin melpa
+  :ensure t
+  :hook (dired-mode . all-the-icons-dired-mode)
+)
+
+(use-package all-the-icons-ivy
+  :pin melpa
+  :ensure t
+  :config
+  (all-the-icons-ivy-setup)
+)
+
+
 
 (use-package dim
   :pin melpa

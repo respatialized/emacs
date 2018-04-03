@@ -325,9 +325,9 @@ Ivy/Counsel/Swiper
 
 (use-package swiper
   :pin melpa
-  :config
-   (define-key xah-fly-key-map
-    (kbd "n") 'swiper)
+;  :config
+;   (define-key xah-fly-key-map
+;    (kbd "n") 'swiper)
 )
 
 (use-package counsel-dash
@@ -817,7 +817,9 @@ These features are used to make the rest of the interface look prettier.
  ))
 )
 
-(global-column-enforce-mode t)
+(set-fringe-mode '(1 . 1))
+(global-column-enforce-mode 1)
+(global-hl-line-mode 1)
 
 (setq org-todo-keyword-faces
   '(("TODO" . (:background "firebrick" :foreground "gray18"))
@@ -844,13 +846,12 @@ These features are used to make the rest of the interface look prettier.
 (add-hook 'nov-mode-hook 'my-nov-font-setup)
 #+end_src 
 
-#+RESULTS:
-| my-nov-font-setup |
 
 Finally, we'll disable some things we don't need when working in a keyboard-centric text editor.
 #+begin_src emacs-lisp
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
+(menu-bar-mode -1)
 #+end_src
 * Utility
 This function ensures that init.el is tangled each time this file is saved.

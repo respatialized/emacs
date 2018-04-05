@@ -97,6 +97,8 @@ Emacs' default keybindings are linked with repetitive strain injury. Xah-Fly-Key
    (kbd "b") 'sdcv-search-pointer)
   (define-key xah-fly-leader-key-map
    (kbd "5") 'split-window-vertically)
+  (define-key xah-fly-leader-key-map
+   (kbd "y") 'swiper)
 
 )
   (define-key xah-fly-key-map
@@ -325,9 +327,7 @@ Ivy/Counsel/Swiper
 
 (use-package swiper
   :pin melpa
-;  :config
-;   (define-key xah-fly-key-map
-;    (kbd "n") 'swiper)
+  :ensure t
 )
 
 (use-package counsel-dash

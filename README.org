@@ -1,9 +1,9 @@
 * Introduction 
 
-This is a git repo to manage the configuration files of emacs, so as to facilitate reversion to previously working configs and avoid conflicts. 
+This repo contains a somewhat verbose emacs configuration, managed mostly through ~use-package~, with each package loaded according to its purpose as part of my emacs configuration.
+
+Full descriptions are available in the file ~newinit.org~.
 
 * How to use this repo
 
-After pulling the latest version of the repo, copy the files initfile.org and init.el to your .emacs configuration.
-
-New packages that you want to keep should go into the initfile.org list of package, instead of being installed via M-x package-install!
+After pulling the latest version of the repo, copy the files newinit.org and init.el to the .emacs path.

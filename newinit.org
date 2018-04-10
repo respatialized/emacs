@@ -252,29 +252,29 @@ Org-mode is also a pretty effective way of composing information to be exported 
 Org-mode can also be used as a personal information manager and help set up flashcards for use with Anki, the spaced repetition app.
 
 #+begin_src emacs-lisp 
-(use-package org-brain
-  :pin melpa
-  :ensure t
-  :config
-  (setq org-brain-path "~/repos_main/orgbrain")
-  (setq org-id-track-globally t)
-  (setq org-id-locations-file "~/.emacs.d/.org-id-locations")
-)
+  (use-package org-brain
+    :pin melpa
+    :ensure t
+    :config
+    (setq org-brain-path "~/repos_main/orgbrain")
+    (setq org-id-track-globally t)
+    (setq org-id-locations-file "~/.emacs.d/.org-id-locations")
+  )
 
-(use-package deft
-  :pin melpa
-  :config
-  (setq deft-extensions '("org"))
-  (setq deft-directory org-brain-path)
-  (setq deft-recursive t)
-)
+  (use-package deft
+    :pin melpa
+    :config
+    (setq deft-extensions '("org"))
+    (setq deft-directory org-brain-path)
+    (setq deft-recursive t)
+  )
 
-(use-package org-journal
-  :pin melpa
-  :ensure t
-  :config
-  (setq org-journal-dir (concat org-brain-path "/journal"))
-)
+  (use-package org-journal
+    :pin melpa
+    :ensure t
+    :config
+    (setq org-journal-dir "~org/journal")
+  )
 #+end_src
 
 Org-mode has enough features that custom keymaps are a worthwhile idea.

@@ -1,6 +1,6 @@
 #+TITLE: Emacs Literate Configuration
 #+AUTHOR: Andrew Foltz-Morrison
-#+PROPERTY: header-args :tangle yes
+#+PROPERTY: header-args :tangle yes :results silent
 
 * initfile.org
 
@@ -171,6 +171,15 @@ Tooling that offers interactive evaluation of Python code and facilitates workin
 )
 #+end_src
 
+** JSON
+Everyone's favorite data interchange format.
+#+begin_src emacs-lisp
+(use-package json-mode
+  :ensure t
+  :pin melpa
+)
+#+end_src
+
 ** Plotting
 
 #+begin_src emacs-lisp 
@@ -246,7 +255,7 @@ Org-mode is also a pretty effective way of composing information to be exported 
 #+begin_src emacs-lisp 
 (require 'ox)
 (use-package org-download
-  :mode "\\.org\\'"
+  :ensure t
   :pin melpa
 )
 #+end_src

@@ -167,8 +167,7 @@ Tooling that offers interactive evaluation of Python code and facilitates workin
 #+begin_src emacs-lisp 
 (use-package yaml-mode
   :pin melpa
-  :config
-  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+  :mode ("\\.yml\\'" . yaml-mode)
 )
 #+end_src
 
@@ -177,6 +176,7 @@ Tooling that offers interactive evaluation of Python code and facilitates workin
 #+begin_src emacs-lisp 
 (use-package graphviz-dot-mode
   :pin melpa
+  :mode ("\\.dot\\'" . graphviz-dot-mode)
 )
 #+end_src
 
@@ -186,8 +186,8 @@ Interactive evaluation of source code in org-babel blocks
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((clojure . t)
-   (shell .t)
-   (ditaa .t)
+   (sh . t)
+   (ditaa . t)
    (dot . t)
    (python . t)
    (scala . t)))
@@ -206,7 +206,7 @@ Interactive evaluation of source code in org-babel blocks
 A pretty good way of organizing hierarchical information, and a pretty helpful task manager. The code below sets up org-mode for task management.
 #+begin_src emacs-lisp 
 (use-package org
-  :ensure org-plus-contrib
+  ;; :ensure org-plus-contrib
   :defer t)
 
 (setq org-refile-targets '(("~/org/gtd.org" :maxlevel . 3)
@@ -246,6 +246,7 @@ Org-mode is also a pretty effective way of composing information to be exported 
 #+begin_src emacs-lisp 
 (require 'ox)
 (use-package org-download
+  :mode "\\.org\\'"
   :pin melpa
 )
 #+end_src
@@ -263,6 +264,7 @@ Org-mode can also be used as a personal information manager and help set up flas
 
   (use-package deft
     :pin melpa
+    :ensure t
     :config
     (setq deft-extensions '("org"))
     (setq deft-directory org-brain-path)
@@ -388,8 +390,7 @@ These tools make working with text (source code, prose, input boxes) easier. Fly
 
 (use-package nov
   :pin melpa
-  :config
-  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+  :mode ("\\.epub\\'" . nov-mode)
 )
 
 (use-package atomic-chrome
@@ -711,6 +712,7 @@ Golden ratio keeps the active window the largest, resizing the others according 
 
 (use-package golden-ratio
   :pin melpa
+  :ensure t
   :config
   (golden-ratio-mode 1)
   (setq golden-ratio-auto-scale t)
@@ -757,6 +759,7 @@ These features are used to make the rest of the interface look prettier.
 
 (use-package spaceline
   :pin melpa
+  :ensure t
   :config
   (require 'spaceline-config)
   (spaceline-emacs-theme)
@@ -783,6 +786,7 @@ These features are used to make the rest of the interface look prettier.
 
 
 (use-package dim
+  :ensure t
   :pin melpa
   :config
   (dim-minor-names
@@ -818,7 +822,13 @@ These features are used to make the rest of the interface look prettier.
 )
 
 (set-fringe-mode '(1 . 1))
-(global-column-enforce-mode 1)
+
+
+(use-package column-enforce-mode
+  :ensure t
+  :pin melpa
+  :config (global-column-enforce-mode 1)
+)
 (global-hl-line-mode 1)
 
 (setq org-todo-keyword-faces

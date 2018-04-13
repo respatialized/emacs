@@ -399,6 +399,7 @@ These tools make working with text (source code, prose, input boxes) easier. Fly
 
 (use-package nov
   :pin melpa
+  :ensure t
   :mode ("\\.epub\\'" . nov-mode)
 )
 

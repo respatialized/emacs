@@ -48,7 +48,7 @@ The code below compiles to init.el, the file that emacs expects when first booti
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+;(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("elpa" . "http://elpa.gnu.org/packages/"))
 (package-initialize)
 
@@ -180,6 +180,16 @@ Everyone's favorite data interchange format.
 )
 #+end_src
 
+** CSV
+Tabular data tools are a must!
+
+#+BEGIN_SRC emacs-lisp
+(use-package csv-mode
+  :pin elpa
+  :ensure t
+)
+#+END_SRC
+
 ** Plotting
 
 #+begin_src emacs-lisp 
@@ -262,6 +272,16 @@ Org-mode is also a pretty effective way of composing information to be exported 
 Org-mode can also be used as a personal information manager and help set up flashcards for use with Anki, the spaced repetition app.
 
 #+begin_src emacs-lisp 
+(use-package htmlize
+  :pin melpa
+  :ensure t
+)
+
+(use-package anki-editor
+  :pin melpa
+  :ensure t
+)
+
   (use-package org-brain
     :pin melpa
     :ensure t

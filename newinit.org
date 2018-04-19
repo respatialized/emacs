@@ -195,6 +195,7 @@ Tabular data tools are a must!
 #+begin_src emacs-lisp 
 (use-package graphviz-dot-mode
   :pin melpa
+  :ensure t
   :mode ("\\.dot\\'" . graphviz-dot-mode)
 )
 #+end_src

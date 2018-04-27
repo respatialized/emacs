@@ -445,7 +445,7 @@ These tools make working with text (source code, prose, input boxes) easier. Fly
 )
 
 (use-package undo-tree
-  :pin melpa
+  :pin elpa
   :ensure t
   :config
   (global-undo-tree-mode)

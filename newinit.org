@@ -406,6 +406,8 @@ Ivy/Counsel/Swiper
 File browsing utilities
 #+begin_src emacs-lisp
 
+(setq dired-listing-switches "-alh")
+
 (use-package dired-subtree
   :ensure t
   :pin melpa

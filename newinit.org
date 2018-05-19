@@ -854,11 +854,11 @@ These features are used to make the rest of the interface look prettier.
    (column-enforce-mode "↹")
    (undo-tree-mode "⸙")
    (ivy-mode "❦")
-   (counsel-mode "⛻")
+   (counsel-mode "⏣")
    (flycheck-mode "✔")
    (which-key-mode "⌨")
    (atomic-chrome-edit-mode "⚛")
-   (rainbow-mode "🌈")
+   (rainbow-mode "✏")
    ))
  (dim-major-names
  '((emacs-lisp-mode           "EL")
@@ -870,6 +870,15 @@ These features are used to make the rest of the interface look prettier.
    (org-agenda-mode            "☑")
  ))
 )
+
+(use-package diminish
+  :pin melpa
+  :ensure t
+  :config
+  (diminish 'buffer-face-mode)
+  (diminish 'which-key-mode)  
+)
+
 
 (set-fringe-mode '(1 . 1))
 

@@ -143,6 +143,9 @@ Tooling that offers interactive evaluation of Python code and facilitates workin
   :ensure t
   :config
   (require 'ein)
+  (require 'ein-loaddefs)
+  (require 'ein-notebook)
+  (require 'ein-subpackages)
 )
 #+end_src
 ** Clojure
@@ -748,9 +751,6 @@ Control spotify from within emacs
 (load-theme 'wold t)
 #+end_src
 
-#+RESULTS:
-: t
-
 ** Other appearance options
 
 Golden ratio keeps the active window the largest, resizing the others according to the golden ratio.
@@ -767,8 +767,7 @@ Golden ratio keeps the active window the largest, resizing the others according 
 
 League Mono is currently the best programming font that I know of. 
 #+begin_src emacs-lisp  
-(add-to-list 'default-frame-alist
-  '(font . "League Mono-12"))
+(defun afm-set-fonts ()
 
 (set-face-font 'fixed-pitch "League Mono-12")
 (set-face-font 'variable-pitch "IBM Plex Sans-13.5:spacing=110")
@@ -776,6 +775,8 @@ League Mono is currently the best programming font that I know of.
 (set-face-font 'mode-line "League Mono-10.5")
 (set-face-font 'mode-line-inactive "League Mono-10.5")
 ;(set-face-font 'linum "League Mono-10.5")
+)
+(afm-set-fonts)
 
   (defun set-buffer-variable-pitch ()
     (interactive)
@@ -793,8 +794,8 @@ League Mono is currently the best programming font that I know of.
   (add-hook 'markdown-mode-hook 'set-buffer-variable-pitch)
   (add-hook 'Info-mode-hook 'set-buffer-variable-pitch)
 
-
 #+end_src
+
 
 These features are used to make the rest of the interface look prettier.
 #+begin_src emacs-lisp  
@@ -929,6 +930,24 @@ Finally, we'll disable some things we don't need when working in a keyboard-cent
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 #+end_src
+* Daemon Hooks
+In order to handle emacs in daemon mode, we need a few helper functions:
+#+BEGIN_SRC emacs-lisp
+
+(add-hook 'after-make-frame-functions
+  (load-theme 'wold t)
+  (afm-set-fonts)
+  (set-fringe-mode '(1 . 1))
+)
+
+;(create-fontset-from-fontset-spec standard-fontset-spec) ;to make --daemon work
+;(dolist (font (reverse default-fonts))
+;  (set-fontset-font "fontset-default" 'unicode font nil 'prepend))
+;(add-to-list 'default-frame-alist '(font . "fontset-default"))
+
+
+#+END_SRC
+
 * Utility
 This function ensures that init.el is tangled each time this file is saved.
 Adapted from [[https://emacs.stackexchange.com/questions/20707/automatically-tangle-org-files-in-a-specific-directory][stack overflow]]. 

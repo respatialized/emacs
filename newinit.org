@@ -221,7 +221,7 @@ Interactive evaluation of source code in org-babel blocks
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((clojure . t)
-   (sh . t)
+   (shell . t)
    (ditaa . t)
    (dot . t)
    (python . t)
@@ -775,7 +775,9 @@ League Mono is currently the best programming font that I know of.
 (set-face-font 'org-column "League Mono-12")
 (set-face-font 'mode-line "League Mono-10.5")
 (set-face-font 'mode-line-inactive "League Mono-10.5")
-;(set-face-font 'linum "League Mono-10.5")
+(set-face-font 'line-number "League Mono Condensed-10:ExtraBold")
+(set-face-background 'line-number "#354548")
+(set-face-foreground 'line-number-current-line "#2f9d63")
 )
 (afm-set-fonts)
 
@@ -884,6 +886,11 @@ These features are used to make the rest of the interface look prettier.
 
 (set-fringe-mode '(1 . 1))
 
+(setq display-line-numbers-current-absolute t)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+; if there's a 3-digit number of LoC, don't reduce the line number fringe
+; size when scrolling up to the lines before 100.
+(setq display-line-numbers-grow-only t)
 
 (use-package column-enforce-mode
   :ensure t

@@ -221,7 +221,7 @@ Interactive evaluation of source code in org-babel blocks
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((clojure . t)
-   (sh . t)
+   (shell . t)
    (ditaa . t)
    (dot . t)
    (python . t)
@@ -770,13 +770,16 @@ Golden ratio keeps the active window the largest, resizing the others according 
 League Mono is currently the best programming font that I know of. 
 #+begin_src emacs-lisp  
 (defun afm-set-fonts ()
-
+(set-face-font 'default "League Mono-12")
 (set-face-font 'fixed-pitch "League Mono-12")
+(set-face-font 'minibuffer-prompt "League Mono-12")
 (set-face-font 'variable-pitch "IBM Plex Sans-13.5:spacing=110")
 (set-face-font 'org-column "League Mono-12")
 (set-face-font 'mode-line "League Mono-10.5")
 (set-face-font 'mode-line-inactive "League Mono-10.5")
-;(set-face-font 'linum "League Mono-10.5")
+(set-face-font 'line-number "League Mono Condensed-10:ExtraBold")
+(set-face-background 'line-number "#354548")
+(set-face-foreground 'line-number-current-line "#2f9d63")
 )
 (afm-set-fonts)
 
@@ -885,6 +888,11 @@ These features are used to make the rest of the interface look prettier.
 
 (set-fringe-mode '(1 . 1))
 
+(setq display-line-numbers-current-absolute t)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+; if there's a 3-digit number of LoC, don't reduce the line number fringe
+; size when scrolling up to the lines before 100.
+(setq display-line-numbers-grow-only t)
 
 (use-package column-enforce-mode
   :ensure t
@@ -935,11 +943,14 @@ Finally, we'll disable some things we don't need when working in a keyboard-cent
 * Daemon Hooks
 In order to handle emacs in daemon mode, we need a few helper functions:
 #+BEGIN_SRC emacs-lisp
+(defun afm-make-frame ()
+ (load-theme 'wold t)
+ (afm-set-fonts)
+ (set-fringe-mode '(1 . 1))
+)
 
 (add-hook 'after-make-frame-functions
-  (load-theme 'wold t)
-  (afm-set-fonts)
-  (set-fringe-mode '(1 . 1))
+  'afm-make-frame
 )
 
 ;(create-fontset-from-fontset-spec standard-fontset-spec) ;to make --daemon work

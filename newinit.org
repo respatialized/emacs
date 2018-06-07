@@ -541,7 +541,9 @@ Control spotify from within emacs
        (var     "#c76c70")
        (c76c70 "#ff0c00")
        (warning "#ff0c00")
-       (warning2 "#ff006b"))
+       (warning2 "#ff006b")
+       (highlight "#e5bd39")
+      )
    (custom-theme-set-faces
    'wold
         `(default ((,class (:background ,bg1 :foreground ,fg1))))

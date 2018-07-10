@@ -127,26 +127,35 @@ Tools that make it easier to ensure that all changes are tracked under revision 
 #+end_src
 
 * Language tooling
+** Global
+#+BEGIN_SRC emacs-lisp
+
+#+END_SRC
 ** Python
 Tooling that offers interactive evaluation of Python code and facilitates working with virtual environments via Anaconda.
 #+begin_src emacs-lisp  
 
-(require 'python)
+  (require 'python)
+  (setq python-shell-interpreter "ipython"
+	python-shell-interpreter-args "--simple-prompt -i")
+; ensuring that anaconda is on the emacs path
+(setq exec-path (append exec-path '("/home/afm/miniconda3/bin")))
 
-(use-package websocket
-  :pin melpa
-  :ensure t
-)
 
-(use-package ein
-  :pin melpa
-  :ensure t
-  :config
-  (require 'ein)
-  (require 'ein-loaddefs)
-  (require 'ein-notebook)
-  (require 'ein-subpackages)
-)
+  (use-package websocket
+    :pin melpa
+    :ensure t
+    )
+
+  (use-package ein
+    :pin melpa
+    :ensure t
+    :config
+    (require 'ein)
+    (require 'ein-loaddefs)
+    (require 'ein-notebook)
+    (require 'ein-subpackages)
+    )
 #+end_src
 ** Clojure
 #+begin_src emacs-lisp  
@@ -554,9 +563,7 @@ Sometimes a simpler file format is easier.
        (var     "#c76c70")
        (c76c70 "#ff0c00")
        (warning "#ff0c00")
-       (warning2 "#ff006b")
-       (highlight "#e5bd39")
-      )
+       (warning2 "#ff006b"))
    (custom-theme-set-faces
    'wold
         `(default ((,class (:background ,bg1 :foreground ,fg1))))

@@ -78,32 +78,14 @@ The code below compiles to init.el, the file that emacs expects when first booti
 
 * Keybindings
 
-Emacs' default keybindings are linked with repetitive strain injury. Xah-Fly-Keys emphasizes modal editing (similar to Vim) and key sequences to avoid the strain associated with pressing key chords.
+Emacs' default keybindings are linked with repetitive strain injury. Boon emphasizes modal editing (similar to Vim), key sequences, and composability to avoid the strain associated with pressing key chords.
 #+begin_src emacs-lisp  
-(use-package xah-fly-keys
+(use-package evil
   :ensure t
   :pin melpa
-  :config ; custom keybindings for common commands I use.
-  (xah-fly-keys 1)
-  (xah-fly-keys-set-layout "qwerty")
-  (define-key xah-fly-leader-key-map
-   (kbd "z") 'comment-region)
-  (define-key xah-fly-leader-key-map
-   (kbd "w") 'org-agenda)
-
-  (define-key xah-fly-leader-key-map
-   (kbd "c") 'org-capture)
-  (define-key xah-fly-leader-key-map
-   (kbd "b") 'sdcv-search-pointer)
-  (define-key xah-fly-leader-key-map
-   (kbd "5") 'split-window-vertically)
-  (define-key xah-fly-leader-key-map
-   (kbd "y") 'swiper)
-
+  :config 
+  (evil-mode 1)
 )
-  (define-key xah-fly-key-map
-   (kbd "<backtab>") 'yas-expand)
-
 
 #+end_src
 
@@ -339,31 +321,9 @@ Org-mode can also be used as a personal information manager and help set up flas
   )
 #+end_src
 
-Org-mode has enough features that custom keymaps are a worthwhile idea.
+Org-mode has enough features that custom keymaps are a worthwhile idea, but I don't know what they should be yet!
 
 #+begin_src emacs-lisp
-
-(defun afm/xah-org-setup () 
-  (setq afm/org-xah-keys (make-sparse-keymap))
-  (define-key afm/org-xah-keys (kbd "t") 'org-todo)
-  (define-key afm/org-xah-keys (kbd "a") 'org-archive-subtree)
-  (define-key afm/org-xah-keys (kbd "s") 'org-schedule)
-  (define-key afm/org-xah-keys (kbd "d") 'org-deadline)
-  (define-key afm/org-xah-keys (kbd "j") 'org-journal-new-entry)
-  (define-key afm/org-xah-keys (kbd ".") 'org-timestamp)
-  (define-key afm/org-xah-keys (kbd "l") 'org-set-tags-command)
-  (define-key afm/org-xah-keys (kbd "r") 'org-refile)
-  (define-key afm/org-xah-keys (kbd "p") 'org-priority)
-  (define-key afm/org-xah-keys (kbd "i") 'org-id-get-create)
-  (define-key afm/org-xah-keys (kbd "c") 'anki-editor-insert-note)
-  (define-key afm/org-xah-keys (kbd "n") 'org-narrow-to-subtree)
-  (define-key afm/org-xah-keys (kbd "w") 'widen)
-  (define-key xah-fly-leader-key-map (kbd "o") afm/org-xah-keys)
-  (define-key xah-fly-leader-key-map
-    (kbd "e") 'org-babel-execute-src-block)
-)
-
-(add-hook 'org-mode-hook 'afm/xah-org-setup)
 
 #+end_src
 
@@ -871,7 +831,6 @@ These features are used to make the rest of the interface look prettier.
    (eldoc-mode         ""    eldoc)
    (golden-ratio-mode "φ")
    (auto-revert-mode "↺")
-   (xah-fly-keys "Σ")
    (buffer-face-mode "β")
    (whitespace-mode    " _"  whitespace)
    (paredit-mode       " ()" paredit)

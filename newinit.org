@@ -779,10 +779,11 @@ Golden ratio keeps the active window the largest, resizing the others according 
 League Mono is currently the best programming font that I know of. 
 #+begin_src emacs-lisp  
 (defun afm-set-fonts ()
+(setq line-spacing 1.45)
 (set-face-font 'default "League Mono-12")
 (set-face-font 'fixed-pitch "League Mono-12")
 (set-face-font 'minibuffer-prompt "League Mono-12")
-(set-face-font 'variable-pitch "IBM Plex Sans-13.5:spacing=110")
+(set-face-font 'variable-pitch "IBM Plex Sans-13.5")
 (set-face-font 'org-column "League Mono-12")
 (set-face-font 'mode-line "League Mono-10.5")
 (set-face-font 'mode-line-inactive "League Mono-10.5")
@@ -795,7 +796,6 @@ League Mono is currently the best programming font that I know of.
   (defun set-buffer-variable-pitch ()
     (interactive)
     (variable-pitch-mode t)
-    (setq line-spacing 0.45)
      (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
      (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
      (set-face-attribute 'org-block-begin-line nil :inherit 'fixed-pitch)
